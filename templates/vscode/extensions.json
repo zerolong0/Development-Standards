@@ -1,0 +1,45 @@
+{
+    "recommendations": [
+        "// AI开发和文档编写推荐扩展": "",
+        
+        "// Markdown支持": "",
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-mermaid",
+        
+        "// 代码格式化": "",
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter",
+        
+        "// Git支持": "",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        
+        "// 代码质量": "",
+        "ms-vscode.vscode-eslint",
+        "ms-python.flake8",
+        "bradlc.vscode-tailwindcss",
+        
+        "// 项目管理": "",
+        "gruntfuggly.todo-tree",
+        "aaron-bond.better-comments",
+        "streetsidesoftware.code-spell-checker",
+        
+        "// JSON和配置文件": "",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-json",
+        
+        "// 开发辅助": "",
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        
+        "// Agent开发特殊推荐": "",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-vscode.powershell"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.vscode-typescript-language-features"
+    ]
+}

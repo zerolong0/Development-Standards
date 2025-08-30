@@ -1,0 +1,270 @@
+name: MVP自动备份和版本管理
+
+on:
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      mvp_description:
+        description: 'MVP功能描述'
+        required: true
+        default: '功能更新'
+      mvp_type:
+        description: 'MVP类型'
+        required: true
+        default: 'feature'
+        type: choice
+        options:
+        - feature
+        - bugfix  
+        - enhancement
+      create_tag:
+        description: '创建Git标签'
+        required: false
+        type: boolean
+        default: false
+        
+  # 定期检查（每天晚上10点）
+  schedule:
+    - cron: '0 22 * * *'
+    
+  # 当有特定提交模式时触发
+  push:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - 'docs/mvp-milestones/**'
+      - 'MVP_STATUS.md'
+
+jobs:
+  check-mvp-status:
+    name: 检查MVP状态
+    runs-on: ubuntu-latest
+    outputs:
+      should_backup: ${{ steps.check.outputs.should_backup }}
+      backup_score: ${{ steps.check.outputs.backup_score }}
+      
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取完整历史
+        
+    - name: 设置Git配置
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        
+    - name: 检查MVP状态
+      id: check
+      run: |
+        # 检查是否需要备份
+        if [ -f "scripts/mvp-check.sh" ]; then
+          chmod +x scripts/mvp-check.sh
+          ./scripts/mvp-check.sh > mvp_check_output.txt || EXIT_CODE=$?
+          
+          # 根据退出码判断是否需要备份
+          if [ "${EXIT_CODE:-0}" -ge 2 ]; then
+            echo "should_backup=true" >> $GITHUB_OUTPUT
+            echo "backup_score=high" >> $GITHUB_OUTPUT
+          elif [ "${EXIT_CODE:-0}" -eq 1 ]; then
+            echo "should_backup=moderate" >> $GITHUB_OUTPUT  
+            echo "backup_score=medium" >> $GITHUB_OUTPUT
+          else
+            echo "should_backup=false" >> $GITHUB_OUTPUT
+            echo "backup_score=low" >> $GITHUB_OUTPUT
+          fi
+          
+          # 输出检查结果
+          cat mvp_check_output.txt
+        else
+          echo "MVP检查脚本不存在"
+          echo "should_backup=false" >> $GITHUB_OUTPUT
+          echo "backup_score=unknown" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: 上传检查报告
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: mvp-check-report
+        path: mvp_check_output.txt
+        retention-days: 7
+
+  auto-backup:
+    name: 执行MVP自动备份
+    runs-on: ubuntu-latest
+    needs: check-mvp-status
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      needs.check-mvp-status.outputs.should_backup == 'true' ||
+      (github.event_name == 'schedule' && needs.check-mvp-status.outputs.should_backup != 'false')
+      
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 设置Git配置
+      run: |
+        git config --global user.name 'MVP Auto Backup'
+        git config --global user.email 'mvp-backup@github-actions.com'
+        
+    - name: 准备MVP备份参数
+      id: params
+      run: |
+        # 设置MVP描述
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          MVP_DESC="${{ github.event.inputs.mvp_description }}"
+          MVP_TYPE="${{ github.event.inputs.mvp_type }}"
+          CREATE_TAG="${{ github.event.inputs.create_tag }}"
+        elif [ "${{ github.event_name }}" = "schedule" ]; then
+          MVP_DESC="定期自动备份 - $(date +'%Y-%m-%d')"
+          MVP_TYPE="enhancement"
+          CREATE_TAG="false"
+        else
+          # Push触发的备份
+          MVP_DESC="代码更新备份 - $(git log -1 --pretty=format:'%s')"
+          MVP_TYPE="feature"
+          CREATE_TAG="false"
+        fi
+        
+        echo "mvp_description=${MVP_DESC}" >> $GITHUB_OUTPUT
+        echo "mvp_type=${MVP_TYPE}" >> $GITHUB_OUTPUT
+        echo "create_tag=${CREATE_TAG}" >> $GITHUB_OUTPUT
+        
+    - name: 执行MVP备份
+      run: |
+        if [ -f "scripts/mvp-backup.sh" ]; then
+          chmod +x scripts/mvp-backup.sh
+          
+          # 构建备份命令
+          BACKUP_CMD="./scripts/mvp-backup.sh"
+          BACKUP_CMD="${BACKUP_CMD} -t '${{ steps.params.outputs.mvp_type }}'"
+          BACKUP_CMD="${BACKUP_CMD} -r origin"
+          
+          if [ "${{ steps.params.outputs.create_tag }}" = "true" ]; then
+            BACKUP_CMD="${BACKUP_CMD} --tag"
+          fi
+          
+          BACKUP_CMD="${BACKUP_CMD} '${{ steps.params.outputs.mvp_description }}'"
+          
+          # 执行备份
+          eval $BACKUP_CMD
+        else
+          echo "❌ MVP备份脚本不存在"
+          exit 1
+        fi
+        
+    - name: 创建Pull Request（如果需要）
+      if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: |
+          chore: MVP备份 - ${{ steps.params.outputs.mvp_description }}
+          
+          🤖 自动生成的MVP里程碑备份
+          - 类型: ${{ steps.params.outputs.mvp_type }}
+          - 时间: ${{ github.run_started_at }}
+          - 触发: ${{ github.event_name }}
+          
+        title: 'MVP备份: ${{ steps.params.outputs.mvp_description }}'
+        body: |
+          ## 🎯 MVP自动备份
+          
+          **备份信息:**
+          - 📝 描述: ${{ steps.params.outputs.mvp_description }}
+          - 🏷️  类型: ${{ steps.params.outputs.mvp_type }}
+          - ⏰ 时间: ${{ github.run_started_at }}
+          - 🔄 触发方式: ${{ github.event_name }}
+          
+          **包含更改:**
+          - 📋 MVP里程碑记录
+          - 📊 项目状态更新
+          - 🤖 自动生成的文档
+          
+          **检查清单:**
+          - [x] MVP功能记录完整
+          - [x] Git提交历史清晰
+          - [x] 文档自动生成
+          - [ ] 人工审查通过
+          
+          ---
+          *此PR由GitHub Actions自动创建*
+          
+        branch: mvp-backup-${{ github.run_number }}
+        delete-branch: true
+        
+  notify:
+    name: 发送通知
+    runs-on: ubuntu-latest
+    needs: [check-mvp-status, auto-backup]
+    if: always()
+    
+    steps:
+    - name: 准备通知内容
+      id: notification
+      run: |
+        if [ "${{ needs.auto-backup.result }}" = "success" ]; then
+          STATUS="✅ 成功"
+          COLOR="good"
+        elif [ "${{ needs.auto-backup.result }}" = "failure" ]; then
+          STATUS="❌ 失败"  
+          COLOR="danger"
+        elif [ "${{ needs.auto-backup.result }}" = "skipped" ]; then
+          STATUS="⏭️ 跳过"
+          COLOR="warning"
+        else
+          STATUS="❓ 未知"
+          COLOR="warning"
+        fi
+        
+        echo "status=${STATUS}" >> $GITHUB_OUTPUT
+        echo "color=${COLOR}" >> $GITHUB_OUTPUT
+        
+    # 这里可以添加各种通知方式，如Slack、企业微信等
+    - name: 输出通知信息
+      run: |
+        echo "📊 MVP备份状态: ${{ steps.notification.outputs.status }}"
+        echo "🔍 检查结果: ${{ needs.check-mvp-status.outputs.backup_score }}"
+        echo "🎯 项目: ${{ github.repository }}"
+        echo "🌿 分支: ${{ github.ref_name }}"
+        echo "⏰ 时间: ${{ github.run_started_at }}"
+
+  # Agent项目专用检查
+  agent-specific-checks:
+    name: Agent项目专用检查
+    runs-on: ubuntu-latest
+    if: contains(github.repository, 'agent') || contains(github.repository, 'Agent')
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 检查Agent项目文件
+      run: |
+        echo "🤖 执行Agent项目专用检查..."
+        
+        # 检查Agent PRD文档
+        if find docs -name "*-Agent-PRD.md" | grep -q .; then
+          echo "✅ 找到Agent PRD文档"
+        else
+          echo "⚠️  未找到Agent PRD文档"
+        fi
+        
+        # 检查Agent开发检查清单
+        if [ -f "docs/AGENT_DEVELOPMENT_CHECKLIST.md" ]; then
+          echo "✅ Agent开发检查清单存在"
+        else
+          echo "⚠️  缺少Agent开发检查清单"
+        fi
+        
+        # 检查Agent相关提交
+        AGENT_COMMITS=$(git log --oneline --since="1 week ago" --grep="agent:" | wc -l)
+        echo "📊 本周Agent相关提交: ${AGENT_COMMITS}个"
+        
+        if [ $AGENT_COMMITS -gt 0 ]; then
+          echo "📝 Agent相关提交:"
+          git log --oneline --since="1 week ago" --grep="agent:" | head -5
+        fi

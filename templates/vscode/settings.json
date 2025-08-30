@@ -1,0 +1,120 @@
+{
+    "// AI开发规范 - VSCode配置模板": "",
+    
+    "// 文件关联配置": "",
+    "files.associations": {
+        "CLAUDE.md": "markdown",
+        "*.md": "markdown"
+    },
+    
+    "// Markdown配置": "",
+    "markdown.preview.breaks": true,
+    "markdown.preview.fontSize": 14,
+    "markdown.preview.lineHeight": 1.6,
+    "markdown.extension.toc.updateOnSave": true,
+    
+    "// 编辑器配置": "",
+    "editor.rulers": [80, 120],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.renderWhitespace": "boundary",
+    
+    "// 文件配置": "",
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    },
+    
+    "// 资源管理器配置": "",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "CLAUDE.md": "docs/standards/*, docs/templates/*",
+        "README.md": "LICENCE, LICENSE",
+        "package.json": "package-lock.json, yarn.lock, .npmrc, .yarnrc"
+    },
+    "explorer.confirmDelete": true,
+    "explorer.confirmDragAndDrop": false,
+    
+    "// Git配置": "",
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "git.showPushSuccessNotification": true,
+    
+    "// 工作台配置": "",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.closeOnFileDelete": true,
+    "workbench.startupEditor": "readme",
+    
+    "// 搜索配置": "",
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/.git": true,
+        "**/dist": true,
+        "**/build": true
+    },
+    
+    "// Agent项目特殊配置": "",
+    "agent.development": {
+        "prdTemplate": "docs/templates/AGENT_PRD_TEMPLATE.md",
+        "checklistFile": "docs/AGENT_DEVELOPMENT_CHECKLIST.md",
+        "wikiUrl": "http://localhost:1024"
+    },
+    
+    "// 语言特定配置": "",
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+    
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true
+        }
+    },
+    
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true
+        }
+    },
+    
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    }
+}

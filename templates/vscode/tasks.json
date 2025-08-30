@@ -1,0 +1,139 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "启动AI开发规范Wiki",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/docs/standards/../../../scripts/simple-wiki.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": [],
+            "runOptions": {
+                "runOn": "default"
+            }
+        },
+        {
+            "label": "检查CLAUDE.md配置",
+            "type": "shell",
+            "command": "echo",
+            "args": [
+                "检查CLAUDE.md配置文件..."
+            ],
+            "group": "test",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "验证CLAUDE.md存在"
+            ]
+        },
+        {
+            "label": "验证CLAUDE.md存在",
+            "type": "shell",
+            "command": "test",
+            "args": [
+                "-f",
+                "CLAUDE.md"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "创建技术决策文档",
+            "type": "shell",
+            "command": "cp",
+            "args": [
+                "${workspaceFolder}/docs/standards/TECHNICAL_DECISIONS_TEMPLATE.md",
+                "${workspaceFolder}/docs/decisions/TD-${input:decisionNumber}-${input:decisionTitle}.md"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Agent: 创建PRD文档",
+            "type": "shell",
+            "command": "cp",
+            "args": [
+                "${workspaceFolder}/docs/templates/AGENT_PRD_TEMPLATE.md",
+                "${workspaceFolder}/docs/${input:projectName}-Agent-PRD.md"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "格式化项目文档",
+            "type": "shell",
+            "command": "find",
+            "args": [
+                "docs",
+                "-name",
+                "*.md",
+                "-exec",
+                "prettier",
+                "--write",
+                "{}",
+                ";"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "运行开发环境检查",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "echo '🔍 检查开发环境配置...' && test -f CLAUDE.md && echo '✅ CLAUDE.md 存在' && test -d docs/standards && echo '✅ 开发规范文档存在' && test -d .vscode && echo '✅ VSCode配置存在' || echo '❌ 开发环境配置不完整'"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "decisionNumber",
+            "description": "技术决策编号 (如: 001)",
+            "default": "001",
+            "type": "promptString"
+        },
+        {
+            "id": "decisionTitle",
+            "description": "技术决策标题 (如: database-selection)",
+            "default": "new-decision",
+            "type": "promptString"
+        },
+        {
+            "id": "projectName",
+            "description": "Agent项目名称",
+            "default": "MyAgent",
+            "type": "promptString"
+        }
+    ]
+}

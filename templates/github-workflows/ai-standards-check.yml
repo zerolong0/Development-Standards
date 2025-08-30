@@ -1,0 +1,270 @@
+name: AI开发规范检查
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  standards-compliance:
+    name: 开发规范合规检查
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 检查CLAUDE.md配置文件
+      run: |
+        if [ ! -f "CLAUDE.md" ]; then
+          echo "❌ 缺少CLAUDE.md配置文件"
+          echo "请运行以下命令集成AI开发规范:"
+          echo "  ./scripts/init-project.sh \$(pwd) [项目类型]"
+          exit 1
+        fi
+        
+        echo "✅ CLAUDE.md配置文件存在"
+        
+        # 检查CLAUDE.md内容完整性
+        REQUIRED_SECTIONS=("项目信息" "开发规范" "Claude协作指南" "项目检查清单")
+        for section in "${REQUIRED_SECTIONS[@]}"; do
+          if ! grep -q "$section" CLAUDE.md; then
+            echo "⚠️  CLAUDE.md缺少'$section'部分"
+          else
+            echo "✅ 找到'$section'部分"
+          fi
+        done
+        
+    - name: 验证开发规范文档
+      run: |
+        if [ ! -d "docs/standards" ]; then
+          echo "❌ 缺少开发规范文档目录"
+          exit 1
+        fi
+        
+        REQUIRED_DOCS=(
+          "DEVELOPMENT_BEST_PRACTICES.md"
+          "PROJECT_WORKFLOW.md"
+          "TECHNICAL_DECISIONS_TEMPLATE.md"
+          "CONTEXT_ENGINEERING_GUIDE.md"
+        )
+        
+        for doc in "${REQUIRED_DOCS[@]}"; do
+          if [ -f "docs/standards/$doc" ]; then
+            echo "✅ 找到规范文档: $doc"
+          else
+            echo "⚠️  缺少规范文档: $doc"
+          fi
+        done
+        
+    - name: 检查Git提交信息规范
+      run: |
+        echo "📝 检查提交信息规范..."
+        
+        # 获取本次PR或push的提交
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          COMMITS=$(git log --pretty=format:"%s" ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+        else
+          COMMITS=$(git log --pretty=format:"%s" -10)
+        fi
+        
+        TOTAL_COMMITS=0
+        STANDARD_COMMITS=0
+        
+        while IFS= read -r commit_msg; do
+          if [ -n "$commit_msg" ]; then
+            TOTAL_COMMITS=$((TOTAL_COMMITS + 1))
+            
+            # 检查是否符合规范格式
+            if [[ "$commit_msg" =~ ^(feat|fix|docs|style|refactor|test|chore|agent)(\(.+\))?\:.+ ]]; then
+              STANDARD_COMMITS=$((STANDARD_COMMITS + 1))
+              echo "✅ $commit_msg"
+            else
+              echo "⚠️  不规范: $commit_msg"
+            fi
+          fi
+        done <<< "$COMMITS"
+        
+        if [ $TOTAL_COMMITS -gt 0 ]; then
+          COMPLIANCE_RATE=$((STANDARD_COMMITS * 100 / TOTAL_COMMITS))
+          echo "📊 提交信息规范率: ${COMPLIANCE_RATE}%"
+          
+          if [ $COMPLIANCE_RATE -lt 80 ]; then
+            echo "⚠️  提交信息规范率较低，建议改进"
+            echo "正确格式: <类型>[可选范围]: <描述>"
+            echo "类型: feat, fix, docs, style, refactor, test, chore, agent"
+          fi
+        fi
+        
+    - name: Agent项目专用检查
+      if: contains(github.repository, 'agent') || contains(github.repository, 'Agent')
+      run: |
+        echo "🤖 执行Agent项目专用检查..."
+        
+        # 检查Agent PRD文档
+        if find docs -name "*-Agent-PRD.md" | grep -q .; then
+          echo "✅ 找到Agent PRD文档"
+          PRD_FILE=$(find docs -name "*-Agent-PRD.md" | head -1)
+          echo "📄 PRD文档: $PRD_FILE"
+          
+          # 检查PRD文档关键部分
+          REQUIRED_PRD_SECTIONS=(
+            "Agent身份设计"
+            "认知能力设计" 
+            "交互行为设计"
+            "知识体系设计"
+            "测试验证设计"
+          )
+          
+          for section in "${REQUIRED_PRD_SECTIONS[@]}"; do
+            if grep -q "$section" "$PRD_FILE"; then
+              echo "✅ PRD包含: $section"
+            else
+              echo "⚠️  PRD缺少: $section"
+            fi
+          done
+        else
+          echo "❌ 缺少Agent PRD文档"
+          echo "请使用模板创建: docs/templates/AGENT_PRD_TEMPLATE.md"
+        fi
+        
+        # 检查Agent开发检查清单
+        if [ -f "docs/AGENT_DEVELOPMENT_CHECKLIST.md" ]; then
+          echo "✅ Agent开发检查清单存在"
+        else
+          echo "⚠️  缺少Agent开发检查清单"
+        fi
+        
+        # 检查Agent相关提交
+        AGENT_COMMITS=$(git log --oneline --since="2 weeks ago" --grep="agent:" | wc -l)
+        echo "📊 近2周Agent相关提交: ${AGENT_COMMITS}个"
+        
+    - name: 检查VSCode配置
+      run: |
+        if [ -d ".vscode" ]; then
+          echo "✅ VSCode配置目录存在"
+          
+          CONFIG_FILES=("settings.json" "tasks.json")
+          for file in "${CONFIG_FILES[@]}"; do
+            if [ -f ".vscode/$file" ]; then
+              echo "✅ VSCode配置: $file"
+            else
+              echo "⚠️  缺少VSCode配置: $file"
+            fi
+          done
+        else
+          echo "⚠️  缺少VSCode配置目录"
+        fi
+        
+    - name: 检查Git hooks配置
+      run: |
+        if [ -f ".git/hooks/pre-commit" ]; then
+          echo "✅ Git pre-commit hook已配置"
+          
+          # 检查hook是否可执行
+          if [ -x ".git/hooks/pre-commit" ]; then
+            echo "✅ Pre-commit hook可执行"
+          else
+            echo "⚠️  Pre-commit hook不可执行"
+          fi
+        else
+          echo "⚠️  缺少Git pre-commit hook"
+        fi
+        
+        if [ -f ".git/hooks/commit-msg" ]; then
+          echo "✅ Git commit-msg hook已配置"
+        else
+          echo "⚠️  缺少Git commit-msg hook"
+        fi
+        
+    - name: 生成合规报告
+      run: |
+        echo "📋 生成开发规范合规报告..."
+        
+        cat > compliance_report.md << EOF
+        # AI开发规范合规检查报告
+        
+        **检查时间**: $(date)
+        **项目**: ${{ github.repository }}
+        **分支**: ${{ github.ref_name }}
+        **事件**: ${{ github.event_name }}
+        
+        ## ✅ 合规检查结果
+        
+        ### 核心配置文件
+        EOF
+        
+        if [ -f "CLAUDE.md" ]; then
+          echo "- ✅ CLAUDE.md配置文件" >> compliance_report.md
+        else
+          echo "- ❌ CLAUDE.md配置文件" >> compliance_report.md
+        fi
+        
+        if [ -d "docs/standards" ]; then
+          echo "- ✅ 开发规范文档目录" >> compliance_report.md
+        else
+          echo "- ❌ 开发规范文档目录" >> compliance_report.md
+        fi
+        
+        if [ -d ".vscode" ]; then
+          echo "- ✅ VSCode配置目录" >> compliance_report.md
+        else
+          echo "- ⚠️  VSCode配置目录" >> compliance_report.md
+        fi
+        
+        if [ -f ".git/hooks/pre-commit" ]; then
+          echo "- ✅ Git pre-commit hook" >> compliance_report.md
+        else
+          echo "- ⚠️  Git pre-commit hook" >> compliance_report.md
+        fi
+        
+        cat >> compliance_report.md << EOF
+        
+        ### Agent项目专用检查
+        EOF
+        
+        if contains(github.repository, 'agent') || contains(github.repository, 'Agent'); then
+          if find docs -name "*-Agent-PRD.md" | grep -q .; then
+            echo "- ✅ Agent PRD文档" >> compliance_report.md
+          else
+            echo "- ❌ Agent PRD文档" >> compliance_report.md
+          fi
+          
+          if [ -f "docs/AGENT_DEVELOPMENT_CHECKLIST.md" ]; then
+            echo "- ✅ Agent开发检查清单" >> compliance_report.md
+          else
+            echo "- ⚠️  Agent开发检查清单" >> compliance_report.md
+          fi
+        else
+          echo "- 🔄 非Agent项目，跳过Agent专用检查" >> compliance_report.md
+        fi
+        
+        echo "" >> compliance_report.md
+        echo "---" >> compliance_report.md
+        echo "*报告由GitHub Actions自动生成*" >> compliance_report.md
+        
+    - name: 上传合规报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: compliance-report-${{ github.run_number }}
+        path: compliance_report.md
+        retention-days: 7
+        
+    - name: 检查结果摘要
+      run: |
+        echo "📊 AI开发规范合规检查完成"
+        echo ""
+        echo "🔍 检查项目:"
+        echo "  ✅ CLAUDE.md配置文件"
+        echo "  ✅ 开发规范文档"
+        echo "  ✅ 提交信息格式"
+        echo "  ✅ VSCode配置"
+        echo "  ✅ Git hooks"
+        if [[ "${{ github.repository }}" == *"agent"* ]] || [[ "${{ github.repository }}" == *"Agent"* ]]; then
+          echo "  🤖 Agent项目专用检查"
+        fi
+        echo ""
+        echo "📋 详细报告已上传到Artifacts"

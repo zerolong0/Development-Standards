@@ -1,0 +1,302 @@
+name: 项目健康度检查
+
+on:
+  # 每周一早上9点运行
+  schedule:
+    - cron: '0 9 * * 1'
+    
+  # 手动触发
+  workflow_dispatch:
+  
+  # PR时检查
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  health-check:
+    name: 项目健康度检查
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 检查AI开发规范集成状态
+      id: standards-check
+      run: |
+        echo "🔍 检查AI开发规范集成状态..."
+        HEALTH_SCORE=100
+        ISSUES=()
+        
+        # 检查CLAUDE.md文件
+        if [ -f "CLAUDE.md" ]; then
+          echo "✅ CLAUDE.md配置文件存在"
+        else
+          echo "❌ 缺少CLAUDE.md配置文件"
+          HEALTH_SCORE=$((HEALTH_SCORE - 20))
+          ISSUES+=("缺少CLAUDE.md配置文件")
+        fi
+        
+        # 检查开发规范文档
+        if [ -d "docs/standards" ]; then
+          echo "✅ 开发规范文档目录存在"
+          DOC_COUNT=$(find docs/standards -name "*.md" | wc -l)
+          echo "📚 规范文档数量: ${DOC_COUNT}"
+        else
+          echo "❌ 缺少开发规范文档"
+          HEALTH_SCORE=$((HEALTH_SCORE - 25))
+          ISSUES+=("缺少开发规范文档目录")
+        fi
+        
+        # 检查Git hooks
+        if [ -f ".git/hooks/pre-commit" ]; then
+          echo "✅ Git pre-commit hook已配置"
+        else
+          echo "⚠️  缺少Git pre-commit hook"
+          HEALTH_SCORE=$((HEALTH_SCORE - 10))
+          ISSUES+=("缺少Git pre-commit hook")
+        fi
+        
+        # 检查VSCode配置
+        if [ -d ".vscode" ]; then
+          echo "✅ VSCode配置目录存在"
+        else
+          echo "⚠️  缺少VSCode配置"
+          HEALTH_SCORE=$((HEALTH_SCORE - 5))
+          ISSUES+=("缺少VSCode配置")
+        fi
+        
+        # 检查README.md
+        if [ -f "README.md" ]; then
+          echo "✅ README.md文档存在"
+        else
+          echo "⚠️  缺少README.md文档"
+          HEALTH_SCORE=$((HEALTH_SCORE - 10))
+          ISSUES+=("缺少README.md文档")
+        fi
+        
+        echo "health_score=${HEALTH_SCORE}" >> $GITHUB_OUTPUT
+        echo "issues_count=${#ISSUES[@]}" >> $GITHUB_OUTPUT
+        
+        # 保存问题列表到文件
+        printf "%s\n" "${ISSUES[@]}" > health_issues.txt
+        
+    - name: 检查MVP管理状态
+      id: mvp-check
+      run: |
+        echo "📊 检查MVP管理状态..."
+        
+        # 检查MVP目录
+        if [ -d "docs/mvp-milestones" ]; then
+          MVP_COUNT=$(find docs/mvp-milestones -name "MVP-*.md" | wc -l)
+          echo "✅ MVP里程碑目录存在，包含 ${MVP_COUNT} 个记录"
+          
+          if [ $MVP_COUNT -gt 0 ]; then
+            LATEST_MVP=$(ls -1t docs/mvp-milestones/MVP-*.md | head -1)
+            echo "📝 最新MVP记录: $(basename "$LATEST_MVP")"
+          fi
+        else
+          echo "⚠️  缺少MVP里程碑目录"
+          MVP_COUNT=0
+        fi
+        
+        # 检查MVP状态文件
+        if [ -f "MVP_STATUS.md" ]; then
+          echo "✅ MVP状态文件存在"
+        else
+          echo "⚠️  缺少MVP状态文件"
+        fi
+        
+        echo "mvp_count=${MVP_COUNT}" >> $GITHUB_OUTPUT
+        
+    - name: 代码质量检查
+      id: code-check
+      run: |
+        echo "💻 执行代码质量检查..."
+        
+        # 统计代码信息
+        TOTAL_COMMITS=$(git rev-list --count HEAD)
+        RECENT_COMMITS=$(git log --oneline --since="1 month ago" | wc -l)
+        
+        echo "📈 总提交数: ${TOTAL_COMMITS}"
+        echo "📅 本月提交数: ${RECENT_COMMITS}"
+        
+        # 检查提交信息规范
+        STANDARD_COMMITS=$(git log --oneline --since="1 month ago" --grep="^feat:\|^fix:\|^docs:\|^chore:\|^agent:" | wc -l)
+        if [ $RECENT_COMMITS -gt 0 ]; then
+          COMMIT_RATIO=$((STANDARD_COMMITS * 100 / RECENT_COMMITS))
+          echo "📋 规范提交比例: ${COMMIT_RATIO}%"
+        else
+          COMMIT_RATIO=0
+        fi
+        
+        echo "commit_ratio=${COMMIT_RATIO}" >> $GITHUB_OUTPUT
+        echo "total_commits=${TOTAL_COMMITS}" >> $GITHUB_OUTPUT
+        echo "recent_commits=${RECENT_COMMITS}" >> $GITHUB_OUTPUT
+        
+    - name: Agent项目专用检查
+      if: contains(github.repository, 'agent') || contains(github.repository, 'Agent')
+      id: agent-check
+      run: |
+        echo "🤖 执行Agent项目专用检查..."
+        AGENT_SCORE=100
+        
+        # 检查Agent PRD文档
+        if find docs -name "*-Agent-PRD.md" | grep -q .; then
+          echo "✅ Agent PRD文档存在"
+        else
+          echo "❌ 缺少Agent PRD文档"
+          AGENT_SCORE=$((AGENT_SCORE - 30))
+        fi
+        
+        # 检查Agent开发检查清单
+        if [ -f "docs/AGENT_DEVELOPMENT_CHECKLIST.md" ]; then
+          echo "✅ Agent开发检查清单存在"
+        else
+          echo "⚠️  缺少Agent开发检查清单"
+          AGENT_SCORE=$((AGENT_SCORE - 20))
+        fi
+        
+        # 检查Agent相关配置
+        if grep -q "agent" CLAUDE.md 2>/dev/null; then
+          echo "✅ CLAUDE.md包含Agent配置"
+        else
+          echo "⚠️  CLAUDE.md缺少Agent专用配置"
+          AGENT_SCORE=$((AGENT_SCORE - 15))
+        fi
+        
+        echo "agent_score=${AGENT_SCORE}" >> $GITHUB_OUTPUT
+        
+    - name: 生成健康度报告
+      run: |
+        echo "📋 生成项目健康度报告..."
+        
+        cat > health_report.md << EOF
+        # 项目健康度报告
+        
+        **生成时间**: $(date)
+        **项目**: ${{ github.repository }}
+        **分支**: ${{ github.ref_name }}
+        
+        ## 📊 总体评分
+        - **开发规范集成**: ${{ steps.standards-check.outputs.health_score }}/100
+        - **MVP管理状态**: ${{ steps.mvp-check.outputs.mvp_count }} 个里程碑记录
+        - **提交信息规范**: ${{ steps.code-check.outputs.commit_ratio }}%
+        EOF
+        
+        if [ "${{ steps.agent-check.outputs.agent_score }}" != "" ]; then
+          echo "- **Agent项目配置**: ${{ steps.agent-check.outputs.agent_score }}/100" >> health_report.md
+        fi
+        
+        cat >> health_report.md << EOF
+        
+        ## 🔍 详细检查结果
+        
+        ### 开发规范集成状态
+        EOF
+        
+        if [ -f "health_issues.txt" ] && [ -s "health_issues.txt" ]; then
+          echo "**发现的问题**:" >> health_report.md
+          cat health_issues.txt | sed 's/^/- ❌ /' >> health_report.md
+        else
+          echo "✅ 所有开发规范配置完整" >> health_report.md
+        fi
+        
+        cat >> health_report.md << EOF
+        
+        ### 代码统计
+        - 总提交数: ${{ steps.code-check.outputs.total_commits }}
+        - 本月提交数: ${{ steps.code-check.outputs.recent_commits }}
+        - 规范提交比例: ${{ steps.code-check.outputs.commit_ratio }}%
+        
+        ## 💡 改进建议
+        EOF
+        
+        if [ "${{ steps.standards-check.outputs.health_score }}" -lt 90 ]; then
+          echo "- 🔧 运行项目初始化脚本完善配置: \`./scripts/init-project.sh\`" >> health_report.md
+        fi
+        
+        if [ "${{ steps.mvp-check.outputs.mvp_count }}" -eq 0 ]; then
+          echo "- 📋 创建首个MVP里程碑记录: \`./scripts/mvp-backup.sh \"初始版本\"\`" >> health_report.md
+        fi
+        
+        if [ "${{ steps.code-check.outputs.commit_ratio }}" -lt 70 ]; then
+          echo "- 📝 改进提交信息格式，使用标准前缀 (feat:, fix:, docs:, agent:)" >> health_report.md
+        fi
+        
+        echo "" >> health_report.md
+        echo "---" >> health_report.md
+        echo "*报告由GitHub Actions自动生成*" >> health_report.md
+        
+    - name: 上传健康度报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: project-health-report
+        path: health_report.md
+        retention-days: 30
+        
+    - name: 输出报告摘要
+      run: |
+        echo "📋 项目健康度检查完成"
+        echo "🏥 健康度评分: ${{ steps.standards-check.outputs.health_score }}/100"
+        echo "🔢 问题数量: ${{ steps.standards-check.outputs.issues_count }}"
+        echo "📊 MVP记录数: ${{ steps.mvp-check.outputs.mvp_count }}"
+        echo "📝 提交规范率: ${{ steps.code-check.outputs.commit_ratio }}%"
+        
+        if [ "${{ steps.standards-check.outputs.health_score }}" -lt 70 ]; then
+          echo "⚠️  项目健康度较低，建议立即改进"
+        elif [ "${{ steps.standards-check.outputs.health_score }}" -lt 90 ]; then
+          echo "⚠️  项目健康度中等，有改进空间"
+        else
+          echo "✅ 项目健康度良好"
+        fi
+        
+    # 如果健康度太低，创建Issue
+    - name: 创建改进Issue
+      if: steps.standards-check.outputs.health_score < 70
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const healthScore = ${{ steps.standards-check.outputs.health_score }};
+          const issuesCount = ${{ steps.standards-check.outputs.issues_count }};
+          
+          const issueBody = `
+          ## 🏥 项目健康度告警
+          
+          **健康度评分**: ${healthScore}/100
+          **发现问题**: ${issuesCount} 个
+          
+          ## 🔍 主要问题
+          ${process.env.HEALTH_ISSUES || '详见健康度报告'}
+          
+          ## 🔧 建议修复步骤
+          1. 运行项目初始化脚本集成AI开发规范
+          2. 配置缺失的开发环境文件
+          3. 完善项目文档和配置
+          4. 建立MVP管理流程
+          
+          ## 🛠️ 修复命令
+          \`\`\`bash
+          # 集成AI开发规范
+          ./scripts/init-project.sh $(pwd)
+          
+          # 检查MVP状态
+          ./scripts/mvp-check.sh
+          
+          # 创建首个MVP记录
+          ./scripts/mvp-backup.sh "初始版本"
+          \`\`\`
+          
+          ---
+          *此Issue由健康度检查自动创建*
+          `;
+          
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🏥 项目健康度告警 - 评分: ${healthScore}/100`,
+            body: issueBody,
+            labels: ['health-check', 'improvement-needed']
+          });
