@@ -1,0 +1,458 @@
+name: Claude Code高级工作流
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '执行模式'
+        required: true
+        default: 'full-audit'
+        type: choice
+        options:
+        - quick-check
+        - security-focus
+        - performance-focus  
+        - full-audit
+      auto_fix:
+        description: '自动修复问题'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  multi-agent-analysis:
+    name: 多Agent协作分析
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[claude-analysis]')
+    
+    outputs:
+      analysis_score: ${{ steps.analysis.outputs.score }}
+      security_issues: ${{ steps.analysis.outputs.security_issues }}
+      performance_score: ${{ steps.analysis.outputs.performance_score }}
+      
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 设置Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 安装依赖
+      run: |
+        npm ci
+        npm install -g @anthropic/claude-code-cli
+        
+    - name: 多Agent协作分析
+      id: analysis
+      run: |
+        echo "🤖 启动多Agent协作分析..."
+        
+        # 分析Agent - 需求理解和技术评估
+        ANALYSIS_RESULT=$(claude-code agent \
+          --role=analyst \
+          --task="全面分析项目结构、技术债务、改进机会" \
+          --output=json)
+        
+        # 提取分析评分
+        ANALYSIS_SCORE=$(echo "$ANALYSIS_RESULT" | jq -r '.score // 0')
+        echo "analysis_score=${ANALYSIS_SCORE}" >> $GITHUB_OUTPUT
+        
+        # 质量Agent - 安全和性能评估  
+        QUALITY_RESULT=$(claude-code agent \
+          --role=qa \
+          --task="安全漏洞扫描、性能瓶颈分析、代码质量评估" \
+          --output=json)
+          
+        SECURITY_ISSUES=$(echo "$QUALITY_RESULT" | jq -r '.security.issues_count // 0')
+        PERFORMANCE_SCORE=$(echo "$QUALITY_RESULT" | jq -r '.performance.score // 0')
+        
+        echo "security_issues=${SECURITY_ISSUES}" >> $GITHUB_OUTPUT
+        echo "performance_score=${PERFORMANCE_SCORE}" >> $GITHUB_OUTPUT
+        
+        # 保存详细分析报告
+        echo "$ANALYSIS_RESULT" > multi-agent-analysis.json
+        echo "$QUALITY_RESULT" > quality-assessment.json
+        
+    - name: 上传分析报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: multi-agent-analysis-${{ github.run_number }}
+        path: |
+          multi-agent-analysis.json
+          quality-assessment.json
+        retention-days: 30
+
+  intelligent-security-scan:
+    name: AI驱动安全扫描
+    runs-on: ubuntu-latest
+    needs: multi-agent-analysis
+    if: needs.multi-agent-analysis.outputs.security_issues > 0 || github.event.inputs.mode == 'security-focus' || github.event.inputs.mode == 'full-audit'
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: Claude安全审查
+      id: security-review
+      run: |
+        echo "🔒 执行AI驱动安全审查..."
+        
+        # 全面安全扫描
+        claude-code security-review \
+          --comprehensive \
+          --focus="authentication,data-validation,crypto,injection" \
+          --severity="medium,high,critical" \
+          --output=security-report.json \
+          --auto-fix=${{ github.event.inputs.auto_fix || 'true' }}
+        
+        # 检查是否有关键安全问题
+        CRITICAL_COUNT=$(jq -r '.issues | map(select(.severity == "critical")) | length' security-report.json)
+        HIGH_COUNT=$(jq -r '.issues | map(select(.severity == "high")) | length' security-report.json)
+        
+        echo "critical_issues=${CRITICAL_COUNT}" >> $GITHUB_OUTPUT
+        echo "high_issues=${HIGH_COUNT}" >> $GITHUB_OUTPUT
+        
+        if [ "$CRITICAL_COUNT" -gt 0 ]; then
+          echo "❌ 发现 ${CRITICAL_COUNT} 个严重安全问题"
+          exit 1
+        elif [ "$HIGH_COUNT" -gt 3 ]; then
+          echo "⚠️ 发现 ${HIGH_COUNT} 个高危安全问题"
+        fi
+        
+    - name: 创建安全问题Issue
+      if: steps.security-review.outputs.critical_issues > 0 || steps.security-review.outputs.high_issues > 5
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('security-report.json', 'utf8'));
+          
+          const criticalIssues = report.issues.filter(i => i.severity === 'critical');
+          const highIssues = report.issues.filter(i => i.severity === 'high');
+          
+          const issueBody = `
+          ## 🔒 安全扫描告警
+          
+          **扫描时间**: ${new Date().toISOString()}
+          **严重问题**: ${criticalIssues.length}个
+          **高危问题**: ${highIssues.length}个
+          
+          ### 🚨 严重安全问题
+          ${criticalIssues.map(issue => `
+          - **${issue.type}**: ${issue.description}
+            - 位置: ${issue.file}:${issue.line}
+            - 风险: ${issue.risk}
+            - 修复: ${issue.fix}
+          `).join('\n')}
+          
+          ### ⚠️ 高危问题
+          ${highIssues.slice(0, 5).map(issue => `
+          - **${issue.type}**: ${issue.description}
+            - 位置: ${issue.file}:${issue.line}
+          `).join('\n')}
+          
+          ## 🛠️ 修复建议
+          1. 立即修复所有严重安全问题
+          2. 优先处理高危问题
+          3. 运行 \`claude-code security-review --auto-fix\` 自动修复
+          4. 更新安全依赖和配置
+          
+          ---
+          *此Issue由Claude Code安全扫描自动创建*
+          `;
+          
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🔒 安全告警 - ${criticalIssues.length}个严重问题 + ${highIssues.length}个高危问题`,
+            body: issueBody,
+            labels: ['security', 'urgent', 'claude-generated']
+          });
+    
+    - name: 上传安全报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-report-${{ github.run_number }}
+        path: security-report.json
+        retention-days: 90
+
+  performance-optimization:
+    name: 性能优化分析
+    runs-on: ubuntu-latest
+    needs: multi-agent-analysis
+    if: needs.multi-agent-analysis.outputs.performance_score < 80 || github.event.inputs.mode == 'performance-focus' || github.event.inputs.mode == 'full-audit'
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js和依赖
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 安装分析工具
+      run: |
+        npm ci
+        npm install -g lighthouse @bundle-analyzer/cli
+        
+    - name: Claude性能审计
+      id: performance-audit
+      run: |
+        echo "⚡ 执行AI驱动性能审计..."
+        
+        # 性能分析
+        claude-code performance-audit \
+          --comprehensive \
+          --target="web" \
+          --metrics="core-web-vitals,bundle-size,runtime" \
+          --output=performance-report.json
+        
+        # 生成优化建议
+        claude-code optimize \
+          --type=performance \
+          --auto-apply=${{ github.event.inputs.auto_fix || 'false' }} \
+          --output=optimization-plan.json
+        
+        # 提取关键指标
+        PERFORMANCE_SCORE=$(jq -r '.overall_score // 0' performance-report.json)
+        CRITICAL_ISSUES=$(jq -r '.critical_issues | length' performance-report.json)
+        
+        echo "performance_score=${PERFORMANCE_SCORE}" >> $GITHUB_OUTPUT
+        echo "critical_issues=${CRITICAL_ISSUES}" >> $GITHUB_OUTPUT
+        
+    - name: 运行Lighthouse审计
+      run: |
+        if [ -f "package.json" ] && grep -q "next" package.json; then
+          echo "检测到Next.js项目，运行开发服务器..."
+          npm run build
+          npm run start &
+          sleep 10
+          
+          lighthouse http://localhost:3000 \
+            --output=json \
+            --output-path=lighthouse-report.json \
+            --chrome-flags="--headless --no-sandbox"
+            
+          pkill -f "npm run start"
+        fi
+        
+    - name: Bundle分析
+      if: contains(github.repository, 'next') || contains(github.repository, 'react')
+      run: |
+        if [ -f ".next/analyze" ]; then
+          echo "生成Bundle分析报告..."
+          npx @next/bundle-analyzer analyze
+        fi
+        
+    - name: 生成性能报告
+      run: |
+        echo "📊 生成综合性能报告..."
+        
+        cat > performance-summary.md << EOF
+        # 性能优化报告
+        
+        **分析时间**: $(date)
+        **项目**: ${{ github.repository }}
+        **性能评分**: $(jq -r '.overall_score' performance-report.json)/100
+        
+        ## 🎯 关键指标
+        $(jq -r '.metrics | to_entries[] | "- **\(.key)**: \(.value)"' performance-report.json)
+        
+        ## ⚠️ 性能问题
+        $(jq -r '.critical_issues[] | "- **\(.type)**: \(.description) (\(.impact))"' performance-report.json)
+        
+        ## 🛠️ 优化建议
+        $(jq -r '.optimizations[] | "- \(.description) (预期提升: \(.impact))"' optimization-plan.json)
+        
+        ---
+        *由Claude Code性能审计自动生成*
+        EOF
+        
+    - name: 上传性能报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-reports-${{ github.run_number }}
+        path: |
+          performance-report.json
+          optimization-plan.json
+          lighthouse-report.json
+          performance-summary.md
+        retention-days: 30
+
+  intelligent-testing:
+    name: 智能测试生成和执行
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置测试环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 安装依赖
+      run: npm ci
+      
+    - name: Claude智能测试生成
+      run: |
+        echo "🧪 生成智能测试用例..."
+        
+        # 分析代码覆盖率缺口
+        claude-code test analyze \
+          --coverage-report \
+          --identify-gaps \
+          --output=test-analysis.json
+        
+        # 自动生成缺失的测试
+        claude-code test generate \
+          --pattern=TDD \
+          --coverage-target=85% \
+          --frameworks=jest,cypress \
+          --auto-apply=true
+        
+    - name: 执行测试套件
+      run: |
+        # 并行执行不同类型的测试
+        npm run test:unit -- --coverage --passWithNoTests &
+        UNIT_PID=$!
+        
+        if [ -f "cypress.config.js" ]; then
+          npm run test:e2e:headless &
+          E2E_PID=$!
+        fi
+        
+        # 等待测试完成
+        wait $UNIT_PID
+        UNIT_EXIT_CODE=$?
+        
+        if [ -n "$E2E_PID" ]; then
+          wait $E2E_PID
+          E2E_EXIT_CODE=$?
+        else
+          E2E_EXIT_CODE=0
+        fi
+        
+        # 检查测试结果
+        if [ $UNIT_EXIT_CODE -ne 0 ] || [ $E2E_EXIT_CODE -ne 0 ]; then
+          echo "❌ 测试失败"
+          exit 1
+        fi
+        
+    - name: 上传测试报告
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-reports-${{ github.run_number }}
+        path: |
+          coverage/
+          cypress/reports/
+          test-analysis.json
+        retention-days: 30
+
+  deployment-readiness:
+    name: 部署就绪性检查
+    runs-on: ubuntu-latest
+    needs: [multi-agent-analysis, intelligent-security-scan, performance-optimization, intelligent-testing]
+    if: always()
+    
+    steps:
+    - name: 评估部署就绪性
+      id: readiness-check
+      run: |
+        echo "📋 评估部署就绪性..."
+        
+        # 收集所有检查结果
+        ANALYSIS_SCORE=${{ needs.multi-agent-analysis.outputs.analysis_score || '0' }}
+        SECURITY_ISSUES=${{ needs.intelligent-security-scan.outputs.critical_issues || '0' }}
+        PERFORMANCE_SCORE=${{ needs.performance-optimization.outputs.performance_score || '0' }}
+        
+        # 计算整体就绪性评分
+        if [ "$SECURITY_ISSUES" -gt 0 ]; then
+          READINESS_SCORE=0
+          READINESS_STATUS="BLOCKED"
+        elif [ "$PERFORMANCE_SCORE" -lt 60 ]; then
+          READINESS_SCORE=30
+          READINESS_STATUS="NOT_READY"
+        elif [ "$ANALYSIS_SCORE" -lt 70 ]; then
+          READINESS_SCORE=60
+          READINESS_STATUS="NEEDS_IMPROVEMENT"
+        else
+          READINESS_SCORE=90
+          READINESS_STATUS="READY"
+        fi
+        
+        echo "readiness_score=${READINESS_SCORE}" >> $GITHUB_OUTPUT
+        echo "readiness_status=${READINESS_STATUS}" >> $GITHUB_OUTPUT
+        
+        # 生成就绪性报告
+        cat > deployment-readiness.md << EOF
+        # 🚀 部署就绪性评估
+        
+        **评估时间**: $(date)
+        **整体评分**: ${READINESS_SCORE}/100
+        **部署状态**: ${READINESS_STATUS}
+        
+        ## 📊 检查结果汇总
+        - **代码分析**: ${ANALYSIS_SCORE}/100
+        - **安全问题**: ${SECURITY_ISSUES}个严重问题
+        - **性能评分**: ${PERFORMANCE_SCORE}/100
+        - **测试状态**: ${{ needs.intelligent-testing.result }}
+        
+        ## 🎯 部署建议
+        $(if [ "$READINESS_STATUS" = "READY" ]; then
+          echo "✅ 项目已准备好部署到生产环境"
+        elif [ "$READINESS_STATUS" = "NEEDS_IMPROVEMENT" ]; then
+          echo "⚠️ 建议解决性能和质量问题后再部署"
+        else
+          echo "❌ 存在阻塞问题，不建议部署"
+        fi)
+        
+        EOF
+        
+    - name: 通知部署状态
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const readinessStatus = '${{ steps.readiness-check.outputs.readiness_status }}';
+          const readinessScore = '${{ steps.readiness-check.outputs.readiness_score }}';
+          
+          let emoji = '✅';
+          let color = 'green';
+          
+          if (readinessStatus === 'BLOCKED') {
+            emoji = '🚫';
+            color = 'red';
+          } else if (readinessStatus === 'NOT_READY') {
+            emoji = '⚠️';
+            color = 'yellow';
+          }
+          
+          await github.rest.repos.createCommitStatus({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            sha: context.sha,
+            state: readinessStatus === 'READY' ? 'success' : 'failure',
+            description: `部署就绪性: ${readinessScore}/100 - ${readinessStatus}`,
+            context: 'claude-code/deployment-readiness'
+          });
+          
+    - name: 上传就绪性报告
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-readiness-${{ github.run_number }}
+        path: deployment-readiness.md
+        retention-days: 60
