@@ -12,6 +12,11 @@
 - **[CONTEXT_ENGINEERING_GUIDE.md](./docs/CONTEXT_ENGINEERING_GUIDE.md)** - AI协作上下文管理指南
 - **[AI_AGENT_DEVELOPMENT_GUIDE.md](./docs/AI_AGENT_DEVELOPMENT_GUIDE.md)** - AI Agent产品开发完整指南
 
+### 📱 移动端跨平台开发指南
+- **[MOBILE_CROSS_PLATFORM_GUIDE.md](./docs/MOBILE_CROSS_PLATFORM_GUIDE.md)** - 移动端跨平台开发完整指南
+- **[MOBILE_FRAMEWORK_COMPARISON.md](./docs/MOBILE_FRAMEWORK_COMPARISON.md)** - 移动端框架详细对比分析
+- **[MOBILE_IMPLEMENTATION_GUIDE.md](./docs/MOBILE_IMPLEMENTATION_GUIDE.md)** - 移动端项目实施指南
+
 ### 📝 实用模板
 - **[PROJECT_SETUP_CHECKLIST.md](./templates/PROJECT_SETUP_CHECKLIST.md)** - 项目启动检查清单
 - **[WEEKLY_PLANNING_TEMPLATE.md](./templates/WEEKLY_PLANNING_TEMPLATE.md)** - 周计划模板
@@ -35,6 +40,9 @@
 # Web项目  
 ./scripts/init-project.sh /path/to/your-project web
 
+# 移动端项目
+./scripts/init-project.sh /path/to/your-project mobile
+
 # 通用项目
 ./scripts/init-project.sh /path/to/your-project
 ```
@@ -45,6 +53,7 @@
 - ✅ Git hooks自动检查
 - ✅ VSCode优化配置
 - ✅ Agent专用模板（agent项目）
+- ✅ 移动端跨平台模板（mobile项目）
 
 📚 **详细使用指南**: [QUICK_START.md](./QUICK_START.md)
 
@@ -108,6 +117,7 @@ cd scripts && python3 start-wiki.py
 ### 适用场景
 - **AI Agent产品开发** - 完整的Agent开发方法论
 - **智能应用开发** - AI驱动的应用产品
+- **移动端跨平台开发** - Flutter、React Native、uni-app、Taro全栈支持
 - iOS/Android移动应用开发
 - Web前端/后端开发  
 - AI/ML项目开发

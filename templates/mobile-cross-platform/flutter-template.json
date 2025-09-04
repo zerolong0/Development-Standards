@@ -1,0 +1,385 @@
+{
+  "name": "Flutter跨平台项目模板",
+  "version": "1.0.0",
+  "framework": "flutter",
+  "description": "企业级Flutter跨平台应用开发模板，支持iOS、Android、Web多端部署",
+  "author": "Development-Standards Team",
+  "tags": ["flutter", "cross-platform", "mobile", "enterprise"],
+  
+  "project_structure": {
+    "lib/": {
+      "main.dart": "应用入口文件",
+      "app/": {
+        "app.dart": "应用主配置",
+        "routes/": {
+          "app_routes.dart": "路由定义",
+          "route_generator.dart": "路由生成器"
+        },
+        "themes/": {
+          "app_theme.dart": "应用主题",
+          "colors.dart": "颜色定义",
+          "text_styles.dart": "文字样式"
+        },
+        "constants/": {
+          "api_constants.dart": "API常量",
+          "app_constants.dart": "应用常量",
+          "storage_keys.dart": "存储键值"
+        }
+      },
+      "core/": {
+        "base/": {
+          "base_controller.dart": "控制器基类",
+          "base_service.dart": "服务基类",
+          "base_model.dart": "数据模型基类"
+        },
+        "network/": {
+          "api_client.dart": "API客户端",
+          "interceptors/": {
+            "auth_interceptor.dart": "认证拦截器",
+            "logging_interceptor.dart": "日志拦截器"
+          }
+        },
+        "storage/": {
+          "local_storage.dart": "本地存储",
+          "secure_storage.dart": "安全存储",
+          "cache_manager.dart": "缓存管理"
+        },
+        "utils/": {
+          "date_utils.dart": "日期工具",
+          "validation_utils.dart": "验证工具",
+          "format_utils.dart": "格式化工具",
+          "platform_utils.dart": "平台工具"
+        },
+        "services/": {
+          "auth_service.dart": "认证服务",
+          "notification_service.dart": "通知服务",
+          "analytics_service.dart": "分析服务"
+        }
+      },
+      "features/": {
+        "authentication/": {
+          "controllers/": {
+            "auth_controller.dart": "认证控制器"
+          },
+          "models/": {
+            "user_model.dart": "用户模型",
+            "auth_response.dart": "认证响应"
+          },
+          "repositories/": {
+            "auth_repository.dart": "认证仓库"
+          },
+          "views/": {
+            "login_screen.dart": "登录页面",
+            "register_screen.dart": "注册页面",
+            "forgot_password_screen.dart": "忘记密码页面"
+          },
+          "widgets/": {
+            "auth_form.dart": "认证表单",
+            "social_login_buttons.dart": "社交登录按钮"
+          }
+        },
+        "home/": {
+          "controllers/": {
+            "home_controller.dart": "首页控制器"
+          },
+          "models/": {
+            "home_data.dart": "首页数据模型"
+          },
+          "views/": {
+            "home_screen.dart": "首页"
+          },
+          "widgets/": {
+            "home_app_bar.dart": "首页应用栏",
+            "banner_widget.dart": "轮播图组件",
+            "category_grid.dart": "分类网格"
+          }
+        },
+        "profile/": {
+          "controllers/": {
+            "profile_controller.dart": "个人资料控制器"
+          },
+          "views/": {
+            "profile_screen.dart": "个人资料页面",
+            "edit_profile_screen.dart": "编辑资料页面"
+          },
+          "widgets/": {
+            "avatar_widget.dart": "头像组件",
+            "profile_info_card.dart": "资料信息卡片"
+          }
+        }
+      },
+      "shared/": {
+        "widgets/": {
+          "custom_app_bar.dart": "自定义应用栏",
+          "loading_widget.dart": "加载组件",
+          "empty_state_widget.dart": "空状态组件",
+          "error_widget.dart": "错误组件",
+          "custom_button.dart": "自定义按钮",
+          "custom_text_field.dart": "自定义输入框",
+          "image_placeholder.dart": "图片占位符",
+          "pull_to_refresh.dart": "下拉刷新"
+        },
+        "components/": {
+          "bottom_nav_bar.dart": "底部导航栏",
+          "search_bar.dart": "搜索栏",
+          "filter_chips.dart": "过滤标签",
+          "rating_stars.dart": "评分星级"
+        },
+        "animations/": {
+          "fade_animation.dart": "淡入淡出动画",
+          "slide_animation.dart": "滑动动画",
+          "scale_animation.dart": "缩放动画"
+        },
+        "extensions/": {
+          "string_extension.dart": "字符串扩展",
+          "date_extension.dart": "日期扩展",
+          "context_extension.dart": "上下文扩展"
+        }
+      }
+    },
+    "test/": {
+      "unit/": {
+        "controllers/": "控制器单元测试",
+        "services/": "服务单元测试",
+        "utils/": "工具类单元测试"
+      },
+      "widget/": {
+        "screens/": "页面组件测试",
+        "widgets/": "小组件测试"
+      },
+      "integration/": {
+        "authentication_test.dart": "认证流程集成测试",
+        "api_integration_test.dart": "API集成测试"
+      }
+    },
+    "integration_test/": {
+      "app_test.dart": "应用端到端测试",
+      "performance_test.dart": "性能测试"
+    },
+    "assets/": {
+      "images/": {
+        "logo.png": "应用Logo",
+        "placeholder.png": "占位图片",
+        "icons/": "图标资源"
+      },
+      "fonts/": "字体文件",
+      "translations/": {
+        "en.json": "英文翻译",
+        "zh.json": "中文翻译"
+      }
+    },
+    "android/": {
+      "app/": {
+        "src/main/": {
+          "kotlin/": "Android Kotlin代码",
+          "res/": "Android资源文件"
+        }
+      }
+    },
+    "ios/": {
+      "Runner/": "iOS项目文件"
+    },
+    "web/": {
+      "index.html": "Web入口文件"
+    }
+  },
+  
+  "dependencies": {
+    "flutter": {
+      "sdk": "flutter"
+    },
+    "cupertino_icons": "^1.0.2",
+    "dio": "^5.3.2",
+    "get": "^4.6.5",
+    "get_storage": "^2.1.1",
+    "cached_network_image": "^3.3.0",
+    "shimmer": "^3.0.0",
+    "lottie": "^2.6.0",
+    "flutter_svg": "^2.0.7",
+    "image_picker": "^1.0.4",
+    "permission_handler": "^11.0.1",
+    "package_info_plus": "^4.2.0",
+    "device_info_plus": "^9.1.0",
+    "connectivity_plus": "^4.0.2",
+    "url_launcher": "^6.1.14",
+    "share_plus": "^7.1.0",
+    "flutter_local_notifications": "^15.1.1",
+    "firebase_core": "^2.17.0",
+    "firebase_analytics": "^10.5.1",
+    "firebase_crashlytics": "^3.4.0",
+    "flutter_localizations": {
+      "sdk": "flutter"
+    },
+    "intl": "^0.18.1"
+  },
+  
+  "dev_dependencies": {
+    "flutter_test": {
+      "sdk": "flutter"
+    },
+    "flutter_lints": "^2.0.0",
+    "build_runner": "^2.4.7",
+    "json_annotation": "^4.8.1",
+    "json_serializable": "^6.7.1",
+    "mockito": "^5.4.2",
+    "integration_test": {
+      "sdk": "flutter"
+    },
+    "flutter_launcher_icons": "^0.13.1"
+  },
+  
+  "flutter": {
+    "uses-material-design": true,
+    "assets": [
+      "assets/images/",
+      "assets/translations/"
+    ],
+    "fonts": [
+      {
+        "family": "CustomFont",
+        "fonts": [
+          {
+            "asset": "assets/fonts/CustomFont-Regular.ttf"
+          },
+          {
+            "asset": "assets/fonts/CustomFont-Bold.ttf",
+            "weight": 700
+          }
+        ]
+      }
+    ]
+  },
+  
+  "scripts": {
+    "clean": "flutter clean",
+    "get": "flutter pub get",
+    "upgrade": "flutter pub upgrade",
+    "analyze": "flutter analyze",
+    "format": "dart format .",
+    "test": "flutter test",
+    "test:integration": "flutter test integration_test/",
+    "build:android": "flutter build apk --release",
+    "build:ios": "flutter build ipa --release",
+    "build:web": "flutter build web --release",
+    "generate": "flutter packages pub run build_runner build",
+    "generate:watch": "flutter packages pub run build_runner watch",
+    "icons": "flutter packages pub run flutter_launcher_icons:main",
+    "l10n": "flutter gen-l10n"
+  },
+  
+  "configuration": {
+    "analysis_options.yaml": {
+      "include": "package:flutter_lints/flutter.yaml",
+      "analyzer": {
+        "exclude": [
+          "build/**",
+          "lib/generated/**"
+        ],
+        "strong-mode": {
+          "implicit-casts": false,
+          "implicit-dynamic": false
+        }
+      },
+      "linter": {
+        "rules": {
+          "prefer_const_constructors": true,
+          "prefer_const_literals_to_create_immutables": true,
+          "avoid_print": true,
+          "avoid_unnecessary_containers": true,
+          "avoid_web_libraries_in_flutter": true,
+          "no_logic_in_create_state": true,
+          "prefer_const_declarations": true,
+          "sized_box_for_whitespace": true,
+          "sort_constructors_first": true,
+          "use_key_in_widget_constructors": true
+        }
+      }
+    },
+    
+    "flutter_launcher_icons.yaml": {
+      "android": "launcher_icon",
+      "ios": true,
+      "image_path": "assets/images/logo.png",
+      "min_sdk_android": 21,
+      "web": {
+        "generate": true,
+        "image_path": "assets/images/logo.png",
+        "background_color": "#hexcode",
+        "theme_color": "#hexcode"
+      },
+      "windows": {
+        "generate": true,
+        "image_path": "assets/images/logo.png",
+        "icon_size": 48
+      },
+      "macos": {
+        "generate": true,
+        "image_path": "assets/images/logo.png"
+      }
+    }
+  },
+  
+  "code_templates": {
+    "controller_template": "// Controller template for GetX pattern\nimport 'package:get/get.dart';\n\nclass {ControllerName}Controller extends GetxController {\n  // Observable variables\n  final isLoading = false.obs;\n  \n  @override\n  void onInit() {\n    super.onInit();\n    // Initialize controller\n  }\n  \n  @override\n  void onReady() {\n    super.onReady();\n    // Called after onInit\n  }\n  \n  @override\n  void onClose() {\n    super.onClose();\n    // Cleanup resources\n  }\n}",
+    
+    "model_template": "// Data model template with JSON serialization\nimport 'package:json_annotation/json_annotation.dart';\n\npart '{model_name}.g.dart';\n\n@JsonSerializable()\nclass {ModelName} {\n  const {ModelName}({\n    required this.id,\n    required this.name,\n  });\n  \n  final String id;\n  final String name;\n  \n  factory {ModelName}.fromJson(Map<String, dynamic> json) => \n      _${ModelName}FromJson(json);\n  \n  Map<String, dynamic> toJson() => _${ModelName}ToJson(this);\n}",
+    
+    "screen_template": "// Screen template with responsive design\nimport 'package:flutter/material.dart';\nimport 'package:get/get.dart';\n\nclass {ScreenName}Screen extends GetView<{ControllerName}Controller> {\n  const {ScreenName}Screen({Key? key}) : super(key: key);\n  \n  @override\n  Widget build(BuildContext context) {\n    return Scaffold(\n      appBar: AppBar(\n        title: Text('{screen_title}'),\n      ),\n      body: SafeArea(\n        child: Obx(() => controller.isLoading.value\n            ? const Center(child: CircularProgressIndicator())\n            : _buildContent()),\n      ),\n    );\n  }\n  \n  Widget _buildContent() {\n    return const Center(\n      child: Text('Content goes here'),\n    );\n  }\n}",
+    
+    "service_template": "// Service template for API interactions\nimport 'package:dio/dio.dart';\nimport '../core/network/api_client.dart';\n\nclass {ServiceName}Service {\n  final ApiClient _apiClient = Get.find<ApiClient>();\n  \n  Future<Response> getData() async {\n    try {\n      final response = await _apiClient.get('/endpoint');\n      return response;\n    } catch (e) {\n      rethrow;\n    }\n  }\n  \n  Future<Response> postData(Map<String, dynamic> data) async {\n    try {\n      final response = await _apiClient.post('/endpoint', data: data);\n      return response;\n    } catch (e) {\n      rethrow;\n    }\n  }\n}"
+  },
+  
+  "features": [
+    "GetX状态管理",
+    "Dio网络请求",
+    "本地存储",
+    "国际化支持",
+    "主题切换",
+    "缓存图片",
+    "权限管理",
+    "推送通知",
+    "崩溃分析",
+    "性能监控",
+    "响应式设计",
+    "暗黑模式",
+    "动画效果",
+    "表单验证",
+    "图片选择"
+  ],
+  
+  "best_practices": [
+    "遵循SOLID原则",
+    "使用MVC架构模式",
+    "实现响应式设计",
+    "统一错误处理",
+    "完善的单元测试",
+    "代码格式化规范",
+    "性能优化策略",
+    "安全最佳实践",
+    "可访问性支持",
+    "国际化标准"
+  ],
+  
+  "ci_cd_integration": {
+    "github_actions": "/.github/workflows/flutter_ci.yml",
+    "codemagic": "/codemagic.yaml",
+    "fastlane": "/fastlane/Fastfile"
+  },
+  
+  "documentation": [
+    "README.md - 项目说明",
+    "ARCHITECTURE.md - 架构文档", 
+    "API.md - API文档",
+    "CONTRIBUTING.md - 贡献指南",
+    "DEPLOYMENT.md - 部署指南"
+  ],
+  
+  "supported_platforms": [
+    "iOS 12.0+",
+    "Android API 21+",
+    "Web (Chrome, Firefox, Safari)",
+    "macOS 10.14+",
+    "Windows 10+",
+    "Linux"
+  ]
+}

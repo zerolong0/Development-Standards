@@ -1,0 +1,328 @@
+{
+  "name": "Taro企业级跨平台项目模板",
+  "version": "1.0.0",
+  "framework": "taro",
+  "description": "Taro企业级跨平台开发模板，支持React/Vue双技术栈，覆盖小程序、H5、RN多端",
+  "author": "Development-Standards Team",
+  "tags": ["taro", "react", "vue", "typescript", "enterprise", "cross-platform"],
+  
+  "project_structure": {
+    "src/": {
+      "app.tsx": "应用入口组件",
+      "app.config.ts": "应用全局配置",
+      "app.scss": "应用全局样式",
+      "index.html": "H5入口模板",
+      "pages/": {
+        "index/": {
+          "index.tsx": "首页组件",
+          "index.config.ts": "首页配置",
+          "index.module.scss": "首页样式",
+          "components/": {
+            "Banner/": {
+              "index.tsx": "轮播图组件",
+              "index.module.scss": "组件样式"
+            },
+            "ProductGrid/": {
+              "index.tsx": "产品网格组件",
+              "index.module.scss": "组件样式"
+            }
+          }
+        },
+        "login/": {
+          "index.tsx": "登录页面",
+          "index.config.ts": "登录页配置",
+          "index.module.scss": "登录样式",
+          "components/": {
+            "LoginForm/": "登录表单组件",
+            "SocialLogin/": "社交登录组件"
+          }
+        },
+        "user/": {
+          "profile/": {
+            "index.tsx": "用户资料页",
+            "index.config.ts": "页面配置",
+            "index.module.scss": "页面样式"
+          },
+          "settings/": {
+            "index.tsx": "设置页面",
+            "index.config.ts": "页面配置",
+            "index.module.scss": "页面样式"
+          },
+          "orders/": {
+            "index.tsx": "订单列表页",
+            "index.config.ts": "页面配置",
+            "index.module.scss": "页面样式"
+          }
+        },
+        "product/": {
+          "list/": {
+            "index.tsx": "产品列表页",
+            "index.config.ts": "页面配置",
+            "index.module.scss": "页面样式"
+          },
+          "detail/": {
+            "index.tsx": "产品详情页",
+            "index.config.ts": "页面配置", 
+            "index.module.scss": "页面样式"
+          }
+        }
+      },
+      "components/": {
+        "common/": {
+          "Button/": {
+            "index.tsx": "通用按钮组件",
+            "index.module.scss": "按钮样式",
+            "index.test.tsx": "按钮测试"
+          },
+          "Input/": {
+            "index.tsx": "通用输入框",
+            "index.module.scss": "输入框样式",
+            "index.test.tsx": "输入框测试"
+          },
+          "Loading/": {
+            "index.tsx": "加载组件",
+            "index.module.scss": "加载样式"
+          },
+          "Empty/": {
+            "index.tsx": "空状态组件",
+            "index.module.scss": "空状态样式"
+          },
+          "Modal/": {
+            "index.tsx": "模态框组件",
+            "index.module.scss": "模态框样式"
+          },
+          "Toast/": {
+            "index.tsx": "提示组件",
+            "index.module.scss": "提示样式"
+          }
+        },
+        "business/": {
+          "ProductCard/": {
+            "index.tsx": "产品卡片",
+            "index.module.scss": "卡片样式"
+          },
+          "UserAvatar/": {
+            "index.tsx": "用户头像",
+            "index.module.scss": "头像样式"
+          },
+          "OrderItem/": {
+            "index.tsx": "订单项",
+            "index.module.scss": "订单样式"
+          },
+          "AddressCard/": {
+            "index.tsx": "地址卡片",
+            "index.module.scss": "地址样式"
+          }
+        }
+      },
+      "store/": {
+        "index.ts": "状态管理入口",
+        "reducers/": {
+          "index.ts": "Reducer合并",
+          "user.ts": "用户状态管理",
+          "product.ts": "产品状态管理",
+          "cart.ts": "购物车状态管理",
+          "app.ts": "应用状态管理"
+        },
+        "actions/": {
+          "user.ts": "用户Action",
+          "product.ts": "产品Action",
+          "cart.ts": "购物车Action",
+          "app.ts": "应用Action"
+        },
+        "types/": {
+          "user.ts": "用户状态类型",
+          "product.ts": "产品状态类型",
+          "cart.ts": "购物车状态类型",
+          "app.ts": "应用状态类型"
+        }
+      },
+      "services/": {
+        "api/": {
+          "index.ts": "API服务入口",
+          "request.ts": "请求封装",
+          "interceptors.ts": "拦截器",
+          "endpoints.ts": "API端点配置"
+        },
+        "auth/": {
+          "index.ts": "认证服务",
+          "token.ts": "Token管理",
+          "storage.ts": "认证存储"
+        },
+        "user/": {
+          "index.ts": "用户服务",
+          "profile.ts": "用户资料服务"
+        },
+        "product/": {
+          "index.ts": "产品服务",
+          "category.ts": "分类服务"
+        },
+        "payment/": {
+          "index.ts": "支付服务",
+          "wechat.ts": "微信支付",
+          "alipay.ts": "支付宝支付"
+        }
+      },
+      "utils/": {
+        "index.ts": "工具函数入口",
+        "common.ts": "通用工具",
+        "format.ts": "格式化工具",
+        "validator.ts": "验证工具",
+        "storage.ts": "存储工具",
+        "device.ts": "设备信息工具",
+        "permission.ts": "权限工具",
+        "constants.ts": "常量定义",
+        "env.ts": "环境配置"
+      },
+      "hooks/": {
+        "index.ts": "自定义Hook入口",
+        "useRequest.ts": "请求Hook",
+        "useAuth.ts": "认证Hook",
+        "useStorage.ts": "存储Hook",
+        "useDebounce.ts": "防抖Hook",
+        "useThrottle.ts": "节流Hook",
+        "useAsync.ts": "异步Hook"
+      },
+      "types/": {
+        "global.d.ts": "全局类型定义",
+        "api.d.ts": "API类型定义",
+        "common.d.ts": "通用类型定义",
+        "store.d.ts": "状态类型定义"
+      },
+      "styles/": {
+        "variables.scss": "SCSS变量",
+        "mixins.scss": "SCSS混入",
+        "common.scss": "通用样式",
+        "reset.scss": "样式重置",
+        "theme.scss": "主题样式"
+      },
+      "assets/": {
+        "images/": {
+          "logo.png": "应用Logo",
+          "placeholder.png": "占位图",
+          "icons/": "图标资源",
+          "tabbar/": "底部导航图标"
+        },
+        "fonts/": "字体资源"
+      },
+      "config/": {
+        "index.ts": "配置入口",
+        "development.ts": "开发环境配置",
+        "production.ts": "生产环境配置",
+        "staging.ts": "测试环境配置"
+      }
+    },
+    "__tests__/": {
+      "components/": "组件测试",
+      "pages/": "页面测试", 
+      "services/": "服务测试",
+      "utils/": "工具函数测试",
+      "hooks/": "Hook测试",
+      "store/": "状态管理测试"
+    },
+    "config/": {
+      "index.js": "Taro配置文件",
+      "dev.js": "开发环境配置",
+      "prod.js": "生产环境配置"
+    },
+    "babel.config.js": "Babel配置",
+    "tsconfig.json": "TypeScript配置",
+    "package.json": "项目配置",
+    "project.config.json": "小程序项目配置"
+  },
+  
+  "dependencies": {
+    "@tarojs/components": "3.6.15",
+    "@tarojs/helper": "3.6.15",
+    "@tarojs/plugin-platform-weapp": "3.6.15",
+    "@tarojs/plugin-platform-alipay": "3.6.15",
+    "@tarojs/plugin-platform-tt": "3.6.15",
+    "@tarojs/plugin-platform-qq": "3.6.15",
+    "@tarojs/plugin-platform-jd": "3.6.15",
+    "@tarojs/plugin-platform-h5": "3.6.15",
+    "@tarojs/runtime": "3.6.15",
+    "@tarojs/shared": "3.6.15",
+    "@tarojs/taro": "3.6.15",
+    "@tarojs/plugin-framework-react": "3.6.15",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.1.3",
+    "@reduxjs/toolkit": "^1.9.7",
+    "redux-persist": "^6.0.0",
+    "axios": "^1.6.0",
+    "dayjs": "^1.11.9",
+    "lodash": "^4.17.21",
+    "classnames": "^2.3.2",
+    "@tarojs/plugin-html": "3.6.15"
+  },
+  
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/lodash": "^4.14.200",
+    "@types/webpack-env": "^1.13.6",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "@tarojs/cli": "3.6.15",
+    "@tarojs/webpack5-runner": "3.6.15",
+    "babel-preset-taro": "3.6.15",
+    "eslint": "^8.47.0",
+    "eslint-config-taro": "3.6.15",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-config-taro-rn": "3.6.15",
+    "typescript": "^5.1.6",
+    "@tarojs/test-utils-react": "^0.1.1",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/jest-dom": "^6.1.3",
+    "jest": "^29.7.0"
+  },
+  
+  "scripts": {
+    "build:weapp": "taro build --type weapp",
+    "build:alipay": "taro build --type alipay",
+    "build:tt": "taro build --type tt",
+    "build:h5": "taro build --type h5",
+    "build:rn": "taro build --type rn",
+    "build:qq": "taro build --type qq",
+    "build:jd": "taro build --type jd",
+    "dev:weapp": "npm run build:weapp -- --watch",
+    "dev:alipay": "npm run build:alipay -- --watch",
+    "dev:tt": "npm run build:tt -- --watch",
+    "dev:h5": "npm run build:h5 -- --watch",
+    "dev:rn": "npm run build:rn -- --watch",
+    "dev:qq": "npm run build:qq -- --watch",
+    "dev:jd": "npm run build:jd -- --watch",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "stylelint": "stylelint \"src/**/*.{css,scss,less}\"",
+    "stylelint:fix": "stylelint \"src/**/*.{css,scss,less}\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "type-check": "tsc --noEmit"
+  },
+  
+  "configuration": {
+    "config/index.js": "const path = require('path');\n\nconst config = {\n  projectName: 'taro-app',\n  date: '2024-1-4',\n  designWidth: 750,\n  deviceRatio: {\n    640: 2.34 / 2,\n    750: 1,\n    828: 1.81 / 2\n  },\n  sourceRoot: 'src',\n  outputRoot: 'dist',\n  plugins: [\n    '@tarojs/plugin-framework-react'\n  ],\n  defineConstants: {},\n  alias: {\n    '@/components': path.resolve(__dirname, '..', 'src/components'),\n    '@/utils': path.resolve(__dirname, '..', 'src/utils'),\n    '@/services': path.resolve(__dirname, '..', 'src/services'),\n    '@/store': path.resolve(__dirname, '..', 'src/store'),\n    '@/types': path.resolve(__dirname, '..', 'src/types'),\n    '@/assets': path.resolve(__dirname, '..', 'src/assets')\n  },\n  copy: {\n    patterns: [],\n    options: {}\n  },\n  framework: 'react',\n  compiler: 'webpack5',\n  cache: {\n    enable: false\n  },\n  mini: {\n    postcss: {\n      pxtransform: {\n        enable: true,\n        config: {}\n      },\n      url: {\n        enable: true,\n        config: {\n          limit: 1024\n        }\n      },\n      cssModules: {\n        enable: true,\n        config: {\n          namingPattern: 'module',\n          generateScopedName: '[name]__[local]___[hash:base64:5]'\n        }\n      }\n    }\n  },\n  h5: {\n    publicPath: '/',\n    staticDirectory: 'static',\n    esnextModules: ['taro-ui'],\n    postcss: {\n      autoprefixer: {\n        enable: true,\n        config: {}\n      },\n      cssModules: {\n        enable: true,\n        config: {\n          namingPattern: 'module',\n          generateScopedName: '[name]__[local]___[hash:base64:5]'\n        }\n      }\n    }\n  },\n  rn: {\n    appName: 'taroDemo',\n    postcss: {\n      cssModules: {\n        enable: true\n      }\n    }\n  }\n};\n\nmodule.exports = function (merge) {\n  if (process.env.NODE_ENV === 'development') {\n    return merge({}, config, require('./dev'))\n  }\n  return merge({}, config, require('./prod'))\n};",
+    
+    "tsconfig.json": "{\n  \"compilerOptions\": {\n    \"target\": \"es2017\",\n    \"lib\": [\"es2017\", \"esnext.asynciterable\"],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"esModuleInterop\": true,\n    \"allowSyntheticDefaultImports\": true,\n    \"strict\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"node\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"noEmit\": true,\n    \"noUnusedLocals\": true,\n    \"noUnusedParameters\": true,\n    \"noImplicitReturns\": true,\n    \"noFallthroughCasesInSwitch\": true,\n    \"jsx\": \"react-jsx\",\n    \"baseUrl\": \".\",\n    \"paths\": {\n      \"@/components/*\": [\"src/components/*\"],\n      \"@/utils/*\": [\"src/utils/*\"],\n      \"@/services/*\": [\"src/services/*\"],\n      \"@/store/*\": [\"src/store/*\"],\n      \"@/types/*\": [\"src/types/*\"],\n      \"@/assets/*\": [\"src/assets/*\"]\n    }\n  },\n  \"include\": [\n    \"./src\",\n    \"./types\"\n  ],\n  \"compileOnSave\": false\n}",
+    
+    "babel.config.js": "module.exports = {\n  presets: [\n    ['taro', {\n      framework: 'react',\n      ts: true\n    }]\n  ],\n  plugins: [\n    ['import', {\n      'libraryName': '@tarojs/components',\n      'libraryDirectory': '',\n      'camel2DashComponentName': false\n    }, '@tarojs/components'],\n  ]\n};",
+    
+    ".eslintrc.js": "module.exports = {\n  extends: [\n    'taro/react',\n    '@typescript-eslint/recommended'\n  ],\n  parser: '@typescript-eslint/parser',\n  parserOptions: {\n    ecmaFeatures: {\n      jsx: true\n    },\n    useJSXTextNode: true,\n    project: './tsconfig.json'\n  },\n  plugins: [\n    '@typescript-eslint'\n  ],\n  rules: {\n    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': 'Taro' }],\n    'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx', '.tsx'] }]\n  }\n};"
+  },
+  
+  "code_templates": {
+    "page_template": "import React, { Component } from 'react';\nimport { View, Text } from '@tarojs/components';\nimport { connect } from 'react-redux';\nimport Taro from '@tarojs/taro';\nimport './index.module.scss';\n\ntype PageOwnProps = {}\n\ntype PageStateProps = {\n  // 从store中获取的state\n}\n\ntype PageDispatchProps = {\n  // dispatch的方法\n}\n\ntype PageState = {\n  // 组件内部state\n}\n\ntype IProps = PageStateProps & PageDispatchProps & PageOwnProps\n\ninterface {PageName} {\n  props: IProps;\n}\n\nclass {PageName} extends Component<IProps, PageState> {\n  config: Taro.PageConfig = {\n    navigationBarTitleText: '{page_title}'\n  }\n\n  constructor(props: IProps) {\n    super(props);\n    this.state = {};\n  }\n\n  componentDidMount() {\n    console.log('页面挂载');\n  }\n\n  render() {\n    return (\n      <View className='page-container'>\n        <Text>{PageName}</Text>\n      </View>\n    );\n  }\n}\n\nconst mapStateToProps = (state) => ({\n  // 映射state到props\n});\n\nconst mapDispatchToProps = (dispatch) => ({\n  // 映射dispatch到props\n});\n\nexport default connect(mapStateToProps, mapDispatchToProps)({PageName});",
+    
+    "component_template": "import React, { Component } from 'react';\nimport { View, Text } from '@tarojs/components';\nimport classNames from 'classnames';\nimport './index.module.scss';\n\ntype Props = {\n  className?: string;\n  title?: string;\n  children?: React.ReactNode;\n}\n\ntype State = {}\n\nexport default class {ComponentName} extends Component<Props, State> {\n  static defaultProps = {\n    title: ''\n  };\n\n  constructor(props: Props) {\n    super(props);\n    this.state = {};\n  }\n\n  render() {\n    const { className, title, children } = this.props;\n    \n    return (\n      <View className={classNames('component-{component-name}', className)}>\n        {title && <Text className='title'>{title}</Text>}\n        {children}\n      </View>\n    );\n  }\n}",
+    
+    "hook_template": "import { useState, useEffect, useCallback } from 'react';\nimport Taro from '@tarojs/taro';\n\nexport interface Use{HookName}Options {\n  // Hook配置选项\n}\n\nexport interface Use{HookName}Result {\n  // Hook返回结果\n  loading: boolean;\n  error: string | null;\n}\n\nexport const use{HookName} = (options?: Use{HookName}Options): Use{HookName}Result => {\n  const [loading, setLoading] = useState(false);\n  const [error, setError] = useState<string | null>(null);\n\n  useEffect(() => {\n    // Hook逻辑\n  }, []);\n\n  const handleAction = useCallback(() => {\n    // 处理逻辑\n  }, []);\n\n  return {\n    loading,\n    error\n  };\n};",
+    
+    "service_template": "import Taro from '@tarojs/taro';\nimport { ApiResponse } from '@/types/api';\n\nexport interface {ServiceName}Item {\n  id: string;\n  name: string;\n  // 其他字段\n}\n\nexport interface {ServiceName}ListParams {\n  page?: number;\n  pageSize?: number;\n  keyword?: string;\n}\n\nexport class {ServiceName}Service {\n  private static baseURL = '/api/{service_name}';\n\n  // 获取列表\n  static async getList(params: {ServiceName}ListParams): Promise<ApiResponse<{ServiceName}Item[]>> {\n    return Taro.request({\n      url: `${this.baseURL}/list`,\n      method: 'GET',\n      data: params\n    });\n  }\n\n  // 获取详情\n  static async getDetail(id: string): Promise<ApiResponse<{ServiceName}Item>> {\n    return Taro.request({\n      url: `${this.baseURL}/${id}`,\n      method: 'GET'\n    });\n  }\n\n  // 创建\n  static async create(data: Partial<{ServiceName}Item>): Promise<ApiResponse<{ServiceName}Item>> {\n    return Taro.request({\n      url: `${this.baseURL}`,\n      method: 'POST',\n      data\n    });\n  }\n\n  // 更新\n  static async update(id: string, data: Partial<{ServiceName}Item>): Promise<ApiResponse<{ServiceName}Item>> {\n    return Taro.request({\n      url: `${this.baseURL}/${id}`,\n      method: 'PUT',\n      data\n    });\n  }\n\n  // 删除\n  static async delete(id: string): Promise<ApiResponse<void>> {\n    return Taro.request({\n      url: `${this.baseURL}/${id}`,\n      method: 'DELETE'\n    });\n  }\n}"
+  },
+  
+  "platform_specific": {\n    \"weapp\": {\n      \"features\": [\n        \"微信登录\",\n        \"微信支付\",\n        \"微信分享\",\n        \"获取用户信息\",\n        \"地理位置\",\n        \"扫码功能\",\n        \"模板消息\",\n        \"客服消息\"\n      ],\n      \"limitations\": [\n        \"包大小限制2MB\",\n        \"分包大小限制20MB\",\n        \"域名白名单限制\",\n        \"API调用频次限制\"\n      ]\n    },\n    \"alipay\": {\n      \"features\": [\n        \"支付宝登录\",\n        \"支付宝支付\",\n        \"芝麻信用\",\n        \"生活缴费\",\n        \"城市服务\"\n      ],\n      \"limitations\": [\n        \"包大小限制2MB\",\n        \"API差异需适配\"\n      ]\n    },\n    \"h5\": {\n      \"features\": [\n        \"浏览器原生API\",\n        \"PWA支持\",\n        \"SEO优化\",\n        \"社交分享\"\n      ],\n      \"optimizations\": [\n        \"代码分割\",\n        \"懒加载\",\n        \"CDN加速\",\n        \"Gzip压缩\"\n      ]\n    },\n    \"rn\": {\n      \"features\": [\n        \"原生性能\",\n        \"原生模块调用\",\n        \"热更新\",\n        \"推送通知\"\n      ],\n      \"considerations\": [\n        \"需要原生开发环境\",\n        \"包体积相对较大\",\n        \"调试相对复杂\"\n      ]\n    }\n  },\n  \n  \"features\": [\n    \"React/Vue双技术栈支持\",\n    \"TypeScript完整支持\",\n    \"多端统一开发\",\n    \"组件化开发\",\n    \"状态管理(Redux/Mobx)\",\n    \"路由管理\",\n    \"样式预处理器\",\n    \"ES6+语法支持\",\n    \"热重载开发\",\n    \"代码压缩优化\",\n    \"Tree Shaking\",\n    \"代码分割\",\n    \"多端条件编译\",\n    \"原生插件支持\",\n    \"丰富的生态组件\"\n  ],\n  \n  \"best_practices\": [\n    \"使用TypeScript提高代码质量\",\n    \"组件化开发提高复用性\",\n    \"合理使用条件编译\",\n    \"优化包体积和性能\",\n    \"统一代码规范\",\n    \"完善的错误处理\",\n    \"适配不同平台特性\",\n    \"做好兼容性测试\",\n    \"遵循各平台设计规范\",\n    \"实施渐进式功能增强\"\n  ],\n  \n  \"supported_platforms\": [\n    \"微信小程序\",\n    \"支付宝小程序\",\n    \"字节跳动小程序\",\n    \"QQ小程序\",\n    \"京东小程序\",\n    \"百度小程序\",\n    \"H5网页\",\n    \"React Native App\"\n  ],\n  \n  \"enterprise_features\": [\n    \"企业级架构设计\",\n    \"完整的状态管理\",\n    \"统一的错误处理\",\n    \"多环境配置管理\",\n    \"完善的测试体系\",\n    \"CI/CD集成支持\",\n    \"代码规范和检查\",\n    \"性能监控集成\",\n    \"安全最佳实践\",\n    \"可扩展的插件系统\"\n  ]\n}

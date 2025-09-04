@@ -1,0 +1,426 @@
+{
+  "name": "uni-app全平台项目模板",
+  "version": "1.0.0",
+  "framework": "uni-app",
+  "description": "uni-app全平台统一开发模板，支持小程序、H5、App多端发布，基于Vue3+TypeScript",
+  "author": "Development-Standards Team",
+  "tags": ["uni-app", "vue3", "typescript", "miniprogram", "h5", "app"],
+  
+  "project_structure": {
+    "src/": {
+      "main.ts": "应用入口文件",
+      "App.vue": "应用根组件",
+      "manifest.json": "应用配置文件",
+      "pages.json": "页面路由配置",
+      "uni.scss": "全局样式变量",
+      "pages/": {
+        "index/": {
+          "index.vue": "首页",
+          "components/": {
+            "banner.vue": "轮播图组件",
+            "category-grid.vue": "分类网格",
+            "product-list.vue": "产品列表"
+          }
+        },
+        "login/": {
+          "login.vue": "登录页面",
+          "register.vue": "注册页面",
+          "forgot-password.vue": "忘记密码页面"
+        },
+        "user/": {
+          "profile.vue": "个人资料页面",
+          "settings.vue": "设置页面",
+          "order-list.vue": "订单列表"
+        },
+        "product/": {
+          "list.vue": "产品列表页面",
+          "detail.vue": "产品详情页面",
+          "search.vue": "产品搜索页面"
+        },
+        "cart/": {
+          "cart.vue": "购物车页面",
+          "checkout.vue": "结算页面"
+        },
+        "common/": {
+          "webview.vue": "内嵌网页",
+          "error.vue": "错误页面",
+          "loading.vue": "加载页面"
+        }
+      },
+      "components/": {
+        "global/": {
+          "uni-load-more/": {
+            "uni-load-more.vue": "加载更多组件",
+            "uni-load-more.scss": "组件样式"
+          },
+          "uni-empty/": {
+            "uni-empty.vue": "空状态组件",
+            "uni-empty.scss": "组件样式"
+          },
+          "uni-popup/": {
+            "uni-popup.vue": "弹窗组件",
+            "uni-popup.scss": "组件样式"
+          }
+        },
+        "business/": {
+          "product-card/": {
+            "product-card.vue": "产品卡片",
+            "product-card.scss": "卡片样式"
+          },
+          "user-avatar/": {
+            "user-avatar.vue": "用户头像",
+            "user-avatar.scss": "头像样式"
+          },
+          "address-picker/": {
+            "address-picker.vue": "地址选择器",
+            "address-picker.scss": "选择器样式"
+          }
+        }
+      },
+      "static/": {
+        "images/": {
+          "logo.png": "应用Logo",
+          "placeholder.png": "占位图片",
+          "icons/": {
+            "home.png": "首页图标",
+            "user.png": "用户图标",
+            "cart.png": "购物车图标",
+            "category.png": "分类图标"
+          },
+          "tabbar/": {
+            "home-active.png": "首页激活图标",
+            "home.png": "首页图标",
+            "category-active.png": "分类激活图标",
+            "category.png": "分类图标",
+            "cart-active.png": "购物车激活图标",
+            "cart.png": "购物车图标",
+            "user-active.png": "用户激活图标",
+            "user.png": "用户图标"
+          }
+        },
+        "fonts/": "字体文件目录"
+      },
+      "utils/": {
+        "request.ts": "网络请求工具",
+        "storage.ts": "存储工具",
+        "common.ts": "通用工具函数",
+        "validator.ts": "表单验证工具",
+        "format.ts": "格式化工具",
+        "permission.ts": "权限工具",
+        "platform.ts": "平台判断工具",
+        "constants.ts": "常量定义"
+      },
+      "api/": {
+        "index.ts": "API统一出口",
+        "auth.ts": "认证相关API",
+        "user.ts": "用户相关API",
+        "product.ts": "产品相关API",
+        "order.ts": "订单相关API",
+        "common.ts": "通用API",
+        "types.ts": "API类型定义"
+      },
+      "store/": {
+        "index.ts": "状态管理入口",
+        "modules/": {
+          "user.ts": "用户状态模块",
+          "cart.ts": "购物车状态模块",
+          "product.ts": "产品状态模块",
+          "app.ts": "应用状态模块"
+        }
+      },
+      "mixins/": {
+        "share.ts": "分享混入",
+        "auth.ts": "认证混入",
+        "payment.ts": "支付混入",
+        "location.ts": "位置混入"
+      },
+      "filters/": {
+        "index.ts": "过滤器统一出口",
+        "format.ts": "格式化过滤器",
+        "time.ts": "时间过滤器"
+      },
+      "styles/": {
+        "common.scss": "通用样式",
+        "variables.scss": "SCSS变量",
+        "mixins.scss": "SCSS混入",
+        "reset.scss": "样式重置",
+        "iconfont.scss": "图标字体样式"
+      },
+      "locale/": {
+        "index.ts": "国际化入口",
+        "zh-CN.ts": "中文语言包",
+        "en-US.ts": "英文语言包"
+      },
+      "types/": {
+        "global.d.ts": "全局类型定义",
+        "api.d.ts": "API类型定义",
+        "components.d.ts": "组件类型定义",
+        "uni.d.ts": "uni-app类型扩展"
+      }
+    },
+    "platforms/": {
+      "mp-weixin/": {
+        "project.config.json": "微信小程序配置",
+        "sitemap.json": "小程序站点地图"
+      },
+      "mp-alipay/": {
+        "mini.project.json": "支付宝小程序配置"
+      },
+      "app-plus/": {
+        "android/": "Android原生扩展",
+        "ios/": "iOS原生扩展"
+      },
+      "h5/": {
+        "index.html": "H5模板文件"
+      }
+    },
+    "mock/": {
+      "index.ts": "Mock数据入口",
+      "user.ts": "用户Mock数据",
+      "product.ts": "产品Mock数据",
+      "common.ts": "通用Mock数据"
+    }
+  },
+  
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-components": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-h5": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-mp-alipay": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3081220221114002",
+    "vue": "^3.2.47",
+    "pinia": "^2.1.6",
+    "vue-i18n": "^9.2.2",
+    "@dcloudio/uni-ui": "^1.4.28",
+    "dayjs": "^1.11.9",
+    "lodash-es": "^4.17.21",
+    "mitt": "^3.0.1",
+    "luch-request": "^3.0.8"
+  },
+  
+  "devDependencies": {
+    "@dcloudio/types": "^3.3.2",
+    "@dcloudio/uni-automator": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/uni-cli-shared": "3.0.0-alpha-3081220221114002",
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-3081220221114002",
+    "@types/node": "^18.17.5",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "@vue/tsconfig": "^0.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "prettier": "^3.0.2",
+    "sass": "^1.66.1",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9",
+    "unplugin-auto-import": "^0.16.6"
+  },
+  
+  "scripts": {
+    "build:app": "uni build --platform app",
+    "build:app-plus": "uni build --platform app-plus",
+    "build:h5": "uni build --platform h5",
+    "build:mp-alipay": "uni build --platform mp-alipay",
+    "build:mp-baidu": "uni build --platform mp-baidu",
+    "build:mp-kuaishou": "uni build --platform mp-kuaishou",
+    "build:mp-lark": "uni build --platform mp-lark",
+    "build:mp-qq": "uni build --platform mp-qq",
+    "build:mp-toutiao": "uni build --platform mp-toutiao",
+    "build:mp-weixin": "uni build --platform mp-weixin",
+    "build:quickapp-webview": "uni build --platform quickapp-webview",
+    "dev:app": "uni --platform app",
+    "dev:app-plus": "uni --platform app-plus",
+    "dev:h5": "uni --platform h5",
+    "dev:mp-alipay": "uni --platform mp-alipay",
+    "dev:mp-baidu": "uni --platform mp-baidu",
+    "dev:mp-kuaishou": "uni --platform mp-kuaishou",
+    "dev:mp-lark": "uni --platform mp-lark",
+    "dev:mp-qq": "uni --platform mp-qq",
+    "dev:mp-toutiao": "uni --platform mp-toutiao",
+    "dev:mp-weixin": "uni --platform mp-weixin",
+    "dev:quickapp-webview": "uni --platform quickapp-webview",
+    "info": "node node_modules/@dcloudio/vite-plugin-uni/bin/uniapp-cli.js info",
+    "lint": "eslint . --ext .vue,.js,.ts --fix",
+    "prettier": "prettier --write .",
+    "type-check": "vue-tsc --noEmit"
+  },
+  
+  "uni-app": {
+    "scripts": {
+      "mp-weixin": {
+        "title": "微信小程序",
+        "env": {
+          "UNI_PLATFORM": "mp-weixin"
+        }
+      },
+      "mp-alipay": {
+        "title": "支付宝小程序",
+        "env": {
+          "UNI_PLATFORM": "mp-alipay"
+        }
+      },
+      "h5": {
+        "title": "H5",
+        "env": {
+          "UNI_PLATFORM": "h5"
+        }
+      },
+      "app": {
+        "title": "App",
+        "env": {
+          "UNI_PLATFORM": "app"
+        }
+      }
+    }
+  },
+  
+  "configuration": {
+    "vite.config.ts": "import { defineConfig } from 'vite';\nimport uni from '@dcloudio/vite-plugin-uni';\nimport AutoImport from 'unplugin-auto-import/vite';\n\nexport default defineConfig({\n  plugins: [\n    uni(),\n    AutoImport({\n      imports: ['vue', 'uni-app'],\n      dts: true,\n    }),\n  ],\n  server: {\n    port: 8080,\n    open: true,\n  },\n  build: {\n    sourcemap: true,\n  },\n});",
+    
+    "tsconfig.json": "{\n  \"extends\": \"@vue/tsconfig/tsconfig.json\",\n  \"compilerOptions\": {\n    \"allowJs\": true,\n    \"sourceMap\": true,\n    \"baseUrl\": \".\",\n    \"paths\": {\n      \"@/*\": [\"./src/*\"],\n      \"@/components/*\": [\"./src/components/*\"],\n      \"@/utils/*\": [\"./src/utils/*\"],\n      \"@/api/*\": [\"./src/api/*\"],\n      \"@/store/*\": [\"./src/store/*\"],\n      \"@/types/*\": [\"./src/types/*\"]\n    },\n    \"lib\": [\"esnext\", \"dom\"],\n    \"types\": [\"@dcloudio/types\", \"@types/node\"]\n  },\n  \"include\": [\n    \"src/**/*.ts\",\n    \"src/**/*.d.ts\",\n    \"src/**/*.tsx\",\n    \"src/**/*.vue\"\n  ],\n  \"exclude\": [\"node_modules\"]\n}",
+    
+    "pages.json": "{\n  \"pages\": [\n    {\n      \"path\": \"pages/index/index\",\n      \"style\": {\n        \"navigationBarTitleText\": \"首页\",\n        \"enablePullDownRefresh\": true\n      }\n    },\n    {\n      \"path\": \"pages/login/login\",\n      \"style\": {\n        \"navigationBarTitleText\": \"登录\",\n        \"navigationStyle\": \"custom\"\n      }\n    }\n  ],\n  \"globalStyle\": {\n    \"navigationBarTextStyle\": \"black\",\n    \"navigationBarTitleText\": \"uni-app\",\n    \"navigationBarBackgroundColor\": \"#FFFFFF\",\n    \"backgroundColor\": \"#F8F8F8\"\n  },\n  \"tabBar\": {\n    \"color\": \"#7A7E83\",\n    \"selectedColor\": \"#007AFF\",\n    \"borderStyle\": \"black\",\n    \"backgroundColor\": \"#FFFFFF\",\n    \"list\": [\n      {\n        \"pagePath\": \"pages/index/index\",\n        \"iconPath\": \"static/tabbar/home.png\",\n        \"selectedIconPath\": \"static/tabbar/home-active.png\",\n        \"text\": \"首页\"\n      },\n      {\n        \"pagePath\": \"pages/category/category\",\n        \"iconPath\": \"static/tabbar/category.png\",\n        \"selectedIconPath\": \"static/tabbar/category-active.png\",\n        \"text\": \"分类\"\n      },\n      {\n        \"pagePath\": \"pages/cart/cart\",\n        \"iconPath\": \"static/tabbar/cart.png\",\n        \"selectedIconPath\": \"static/tabbar/cart-active.png\",\n        \"text\": \"购物车\"\n      },\n      {\n        \"pagePath\": \"pages/user/profile\",\n        \"iconPath\": \"static/tabbar/user.png\",\n        \"selectedIconPath\": \"static/tabbar/user-active.png\",\n        \"text\": \"我的\"\n      }\n    ]\n  },\n  \"condition\": {\n    \"current\": 0,\n    \"list\": [\n      {\n        \"name\": \"\",\n        \"path\": \"\",\n        \"query\": \"\"\n      }\n    ]\n  }\n}",
+    
+    "manifest.json": "{\n  \"name\": \"uni-app项目\",\n  \"appid\": \"\",\n  \"description\": \"\",\n  \"versionName\": \"1.0.0\",\n  \"versionCode\": \"100\",\n  \"transformPx\": false,\n  \"networkTimeout\": {\n    \"request\": 60000,\n    \"downloadFile\": 60000\n  },\n  \"debug\": true,\n  \"app-plus\": {\n    \"usingComponents\": true,\n    \"nvueStyleCompiler\": \"uni-app\",\n    \"compilerVersion\": 3,\n    \"splashscreen\": {\n      \"alwaysShowBeforeRender\": true,\n      \"waiting\": true,\n      \"autoclose\": true,\n      \"delay\": 0\n    },\n    \"modules\": {},\n    \"distribute\": {\n      \"android\": {\n        \"permissions\": [\n          \"<uses-permission android:name=\\\"android.permission.CHANGE_NETWORK_STATE\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.VIBRATE\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.READ_LOGS\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.ACCESS_WIFI_STATE\\\" />\",\n          \"<uses-feature android:name=\\\"android.hardware.camera.autofocus\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.ACCESS_NETWORK_STATE\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.CAMERA\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.GET_ACCOUNTS\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.READ_PHONE_STATE\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.CHANGE_WIFI_STATE\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.WAKE_LOCK\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.FLASHLIGHT\\\" />\",\n          \"<uses-feature android:name=\\\"android.hardware.camera\\\" />\",\n          \"<uses-permission android:name=\\\"android.permission.WRITE_SETTINGS\\\" />\"\n        ]\n      },\n      \"ios\": {},\n      \"sdkConfigs\": {}\n    }\n  },\n  \"quickapp\": {},\n  \"mp-weixin\": {\n    \"appid\": \"\",\n    \"setting\": {\n      \"urlCheck\": false\n    },\n    \"usingComponents\": true\n  },\n  \"mp-alipay\": {\n    \"usingComponents\": true\n  },\n  \"mp-baidu\": {\n    \"usingComponents\": true\n  },\n  \"mp-toutiao\": {\n    \"usingComponents\": true\n  },\n  \"uniStatistics\": {\n    \"enable\": false\n  },\n  \"h5\": {\n    \"optimization\": {\n      \"treeShaking\": {\n        \"enable\": true\n      }\n    }\n  }\n}"
+  },
+  
+  "code_templates": {
+    "page_template": "<template>\n  <view class=\"container\">\n    <uni-nav-bar :title=\"title\" :border=\"false\" :fixed=\"true\" />\n    <view class=\"content\">\n      <!-- 页面内容 -->\n    </view>\n  </view>\n</template>\n\n<script setup lang=\"ts\">\nimport { ref, onMounted } from 'vue';\nimport { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app';\n\nconst title = ref('{PageTitle}');\n\nonLoad((options: any) => {\n  console.log('页面参数:', options);\n});\n\nonShow(() => {\n  console.log('页面显示');\n});\n\nonPullDownRefresh(() => {\n  // 下拉刷新逻辑\n  setTimeout(() => {\n    uni.stopPullDownRefresh();\n  }, 1000);\n});\n\nonMounted(() => {\n  console.log('组件挂载完成');\n});\n</script>\n\n<style lang=\"scss\" scoped>\n.container {\n  min-height: 100vh;\n  background-color: #f8f8f8;\n}\n\n.content {\n  padding: 20rpx;\n  margin-top: 88rpx;\n}\n</style>",
+    
+    "component_template": "<template>\n  <view class=\"{component-name}\">\n    <slot></slot>\n  </view>\n</template>\n\n<script setup lang=\"ts\">\nimport { ref, computed } from 'vue';\n\ninterface Props {\n  title?: string;\n  disabled?: boolean;\n}\n\nconst props = withDefaults(defineProps<Props>(), {\n  title: '',\n  disabled: false\n});\n\nconst emit = defineEmits<{\n  click: [event: Event];\n}>();\n\nconst handleClick = (event: Event) => {\n  if (!props.disabled) {\n    emit('click', event);\n  }\n};\n</script>\n\n<style lang=\"scss\" scoped>\n.{component-name} {\n  // 组件样式\n}\n</style>",
+    
+    "api_template": "import { request } from '@/utils/request';\n\n// {API_NAME} API接口\nexport interface {ModelName} {\n  id: string;\n  name: string;\n  // 其他字段\n}\n\n// 获取列表\nexport function get{ModelName}List(params?: any) {\n  return request<{ModelName}[]>({\n    url: '/{api_path}',\n    method: 'GET',\n    params\n  });\n}\n\n// 获取详情\nexport function get{ModelName}Detail(id: string) {\n  return request<{ModelName}>({\n    url: `/{api_path}/${id}`,\n    method: 'GET'\n  });\n}\n\n// 创建\nexport function create{ModelName}(data: Partial<{ModelName}>) {\n  return request<{ModelName}>({\n    url: '/{api_path}',\n    method: 'POST',\n    data\n  });\n}\n\n// 更新\nexport function update{ModelName}(id: string, data: Partial<{ModelName}>) {\n  return request<{ModelName}>({\n    url: `/{api_path}/${id}`,\n    method: 'PUT',\n    data\n  });\n}\n\n// 删除\nexport function delete{ModelName}(id: string) {\n  return request({\n    url: `/{api_path}/${id}`,\n    method: 'DELETE'\n  });\n}",
+    
+    "store_template": "import { defineStore } from 'pinia';\n\nexport interface {StoreName}State {\n  // 状态定义\n  loading: boolean;\n  data: any[];\n  error: string | null;\n}\n\nexport const use{StoreName}Store = defineStore('{storeName}', {\n  state: (): {StoreName}State => ({\n    loading: false,\n    data: [],\n    error: null\n  }),\n  \n  getters: {\n    // 计算属性\n    hasData: (state) => state.data.length > 0\n  },\n  \n  actions: {\n    // 异步操作\n    async fetchData() {\n      this.loading = true;\n      this.error = null;\n      \n      try {\n        // API调用\n        const response = await api.getData();\n        this.data = response.data;\n      } catch (error) {\n        this.error = error.message;\n        console.error('获取数据失败:', error);\n      } finally {\n        this.loading = false;\n      }\n    },\n    \n    // 同步操作\n    clearData() {\n      this.data = [];\n      this.error = null;\n    }\n  }\n});"
+  },
+  
+  "platform_specific": {
+    "mp-weixin": {
+      "features": [
+        "微信支付",
+        "微信登录",
+        "微信分享",
+        "小程序码生成",
+        "模板消息",
+        "订阅消息",
+        "微信运动",
+        "地理位置",
+        "蓝牙连接",
+        "NFC读取"
+      ],
+      "limitations": [
+        "包大小限制2MB",
+        "分包大小限制20MB",
+        "网络请求域名需要配置",
+        "不支持document和window",
+        "部分CSS特性受限"
+      ]
+    },
+    "mp-alipay": {
+      "features": [
+        "支付宝支付",
+        "支付宝登录",
+        "芝麻信用",
+        "生活缴费",
+        "城市服务",
+        "花呗分期",
+        "余额宝",
+        "蚂蚁森林"
+      ],
+      "limitations": [
+        "包大小限制2MB",
+        "API差异需要适配",
+        "组件样式有差异"
+      ]
+    },
+    "h5": {
+      "features": [
+        "PWA支持",
+        "浏览器原生API",
+        "SEO优化",
+        "社交分享",
+        "地理定位",
+        "设备传感器",
+        "离线缓存",
+        "推送通知"
+      ],
+      "optimizations": [
+        "代码分割",
+        "懒加载",
+        "图片优化",
+        "CDN加速",
+        "Gzip压缩"
+      ]
+    },
+    "app": {
+      "features": [
+        "原生插件",
+        "推送通知",
+        "热更新",
+        "生物识别",
+        "相机扫码",
+        "文件操作",
+        "SQLite数据库",
+        "蓝牙通信",
+        "NFC读写",
+        "传感器访问"
+      ],
+      "performance": [
+        "原生渲染",
+        "多线程支持",
+        "硬件加速",
+        "内存优化"
+      ]
+    }
+  },
+  
+  "features": [
+    "Vue3 Composition API",
+    "TypeScript支持",
+    "Pinia状态管理",
+    "全平台统一开发",
+    "条件编译",
+    "原生插件扩展",
+    "热重载开发",
+    "自动化构建",
+    "多语言支持",
+    "主题定制",
+    "组件库生态",
+    "性能优化",
+    "SEO友好",
+    "PWA支持",
+    "原生能力调用"
+  ],
+  
+  "supported_platforms": [
+    "微信小程序",
+    "支付宝小程序",
+    "百度小程序",
+    "字节跳动小程序",
+    "QQ小程序",
+    "快手小程序",
+    "京东小程序",
+    "H5网页",
+    "iOS App",
+    "Android App",
+    "鸿蒙应用",
+    "快应用",
+    "360小程序"
+  ],
+  
+  "best_practices": [
+    "使用条件编译处理平台差异",
+    "遵循各平台设计规范",
+    "优化包体积和性能",
+    "处理网络异常和错误",
+    "适配不同屏幕尺寸",
+    "合理使用缓存策略",
+    "注意用户体验一致性",
+    "做好兼容性测试",
+    "遵循小程序审核规范",
+    "实施渐进式功能增强"
+  ]
+}

@@ -1,0 +1,425 @@
+{
+  "name": "React Native跨平台项目模板",
+  "version": "1.0.0",
+  "framework": "react-native",
+  "description": "现代化React Native跨平台应用开发模板，支持TypeScript、新架构和最佳实践",
+  "author": "Development-Standards Team",
+  "tags": ["react-native", "typescript", "cross-platform", "mobile"],
+  
+  "project_structure": {
+    "src/": {
+      "App.tsx": "应用根组件",
+      "components/": {
+        "common/": {
+          "Button/": {
+            "Button.tsx": "自定义按钮组件",
+            "Button.styles.ts": "按钮样式",
+            "Button.test.tsx": "按钮测试",
+            "index.ts": "导出文件"
+          },
+          "Input/": {
+            "Input.tsx": "输入框组件",
+            "Input.styles.ts": "输入框样式",
+            "Input.test.tsx": "输入框测试",
+            "index.ts": "导出文件"
+          },
+          "Loading/": {
+            "Loading.tsx": "加载组件",
+            "Loading.styles.ts": "加载样式",
+            "index.ts": "导出文件"
+          },
+          "Modal/": {
+            "Modal.tsx": "模态框组件",
+            "Modal.styles.ts": "模态框样式",
+            "index.ts": "导出文件"
+          }
+        },
+        "business/": {
+          "ProductCard/": "产品卡片组件",
+          "UserProfile/": "用户资料组件",
+          "OrderItem/": "订单项组件"
+        }
+      },
+      "screens/": {
+        "Authentication/": {
+          "LoginScreen/": {
+            "LoginScreen.tsx": "登录页面",
+            "LoginScreen.styles.ts": "登录页面样式",
+            "LoginScreen.test.tsx": "登录页面测试",
+            "index.ts": "导出文件"
+          },
+          "RegisterScreen/": "注册页面",
+          "ForgotPasswordScreen/": "忘记密码页面"
+        },
+        "Home/": {
+          "HomeScreen.tsx": "首页",
+          "HomeScreen.styles.ts": "首页样式",
+          "components/": {
+            "Banner.tsx": "轮播图组件",
+            "CategoryList.tsx": "分类列表",
+            "ProductGrid.tsx": "产品网格"
+          }
+        },
+        "Profile/": {
+          "ProfileScreen.tsx": "个人资料页面",
+          "EditProfileScreen.tsx": "编辑资料页面",
+          "SettingsScreen.tsx": "设置页面"
+        },
+        "Product/": {
+          "ProductListScreen.tsx": "产品列表页面",
+          "ProductDetailScreen.tsx": "产品详情页面"
+        }
+      },
+      "navigation/": {
+        "AppNavigator.tsx": "应用导航器",
+        "AuthNavigator.tsx": "认证导航器",
+        "TabNavigator.tsx": "标签导航器",
+        "types.ts": "导航类型定义",
+        "utils.ts": "导航工具函数"
+      },
+      "store/": {
+        "index.ts": "Store入口",
+        "rootReducer.ts": "根Reducer",
+        "middleware.ts": "中间件配置",
+        "slices/": {
+          "authSlice.ts": "认证状态切片",
+          "userSlice.ts": "用户状态切片",
+          "productSlice.ts": "产品状态切片",
+          "uiSlice.ts": "UI状态切片"
+        }
+      },
+      "services/": {
+        "api/": {
+          "apiClient.ts": "API客户端",
+          "endpoints.ts": "API端点定义",
+          "types.ts": "API类型定义",
+          "interceptors.ts": "请求拦截器"
+        },
+        "auth/": {
+          "authService.ts": "认证服务",
+          "tokenService.ts": "令牌服务"
+        },
+        "storage/": {
+          "asyncStorage.ts": "异步存储",
+          "secureStorage.ts": "安全存储",
+          "mmkvStorage.ts": "MMKV高性能存储"
+        },
+        "notification/": {
+          "pushNotification.ts": "推送通知",
+          "localNotification.ts": "本地通知"
+        },
+        "analytics/": {
+          "analyticsService.ts": "分析服务",
+          "crashlytics.ts": "崩溃分析"
+        }
+      },
+      "hooks/": {
+        "useApi.ts": "API请求Hook",
+        "useAuth.ts": "认证Hook", 
+        "useStorage.ts": "存储Hook",
+        "useKeyboard.ts": "键盘Hook",
+        "useNetworkStatus.ts": "网络状态Hook",
+        "usePermissions.ts": "权限Hook",
+        "useTheme.ts": "主题Hook"
+      },
+      "utils/": {
+        "constants.ts": "常量定义",
+        "helpers.ts": "辅助函数",
+        "validation.ts": "验证工具",
+        "formatting.ts": "格式化工具",
+        "device.ts": "设备工具",
+        "permissions.ts": "权限工具",
+        "logger.ts": "日志工具"
+      },
+      "types/": {
+        "api.ts": "API类型",
+        "auth.ts": "认证类型",
+        "user.ts": "用户类型",
+        "product.ts": "产品类型",
+        "navigation.ts": "导航类型",
+        "common.ts": "通用类型"
+      },
+      "assets/": {
+        "images/": {
+          "logo.png": "应用Logo",
+          "placeholder.png": "占位图",
+          "icons/": "图标资源"
+        },
+        "fonts/": "字体文件",
+        "translations/": {
+          "en.json": "英文翻译",
+          "zh.json": "中文翻译"
+        }
+      },
+      "styles/": {
+        "theme.ts": "主题定义",
+        "colors.ts": "颜色定义",
+        "typography.ts": "字体样式",
+        "spacing.ts": "间距定义",
+        "shadows.ts": "阴影样式",
+        "globalStyles.ts": "全局样式"
+      }
+    },
+    "__tests__/": {
+      "components/": "组件测试",
+      "screens/": "页面测试",
+      "services/": "服务测试",
+      "utils/": "工具函数测试",
+      "hooks/": "Hook测试",
+      "store/": "状态管理测试"
+    },
+    "e2e/": {
+      "jest.config.js": "E2E测试配置",
+      "tests/": {
+        "authentication.test.js": "认证流程测试",
+        "navigation.test.js": "导航测试",
+        "core-features.test.js": "核心功能测试"
+      }
+    },
+    "android/": {
+      "app/": {
+        "src/main/": {
+          "java/": "Android Java/Kotlin代码",
+          "res/": "Android资源文件",
+          "AndroidManifest.xml": "Android清单文件"
+        }
+      },
+      "gradle.properties": "Gradle属性",
+      "settings.gradle": "Gradle设置"
+    },
+    "ios/": {
+      "ProjectName/": {
+        "Info.plist": "iOS信息文件",
+        "AppDelegate.h": "应用委托头文件",
+        "AppDelegate.mm": "应用委托实现"
+      },
+      "Podfile": "CocoaPods依赖文件"
+    }
+  },
+  
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "0.72.6",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/stack": "^6.3.20",
+    "@react-navigation/bottom-tabs": "^6.5.11",
+    "@react-navigation/drawer": "^6.6.6",
+    "@reduxjs/toolkit": "^1.9.7",
+    "react-redux": "^8.1.3",
+    "redux-persist": "^6.0.0",
+    "react-native-reanimated": "^3.5.4",
+    "react-native-gesture-handler": "^2.13.4",
+    "react-native-screens": "^3.27.0",
+    "react-native-safe-area-context": "^4.7.4",
+    "react-native-vector-icons": "^10.0.0",
+    "react-native-fast-image": "^8.6.3",
+    "react-native-mmkv": "^2.10.2",
+    "react-native-keychain": "^8.1.3",
+    "react-native-device-info": "^10.11.0",
+    "react-native-permissions": "^3.10.1",
+    "@react-native-async-storage/async-storage": "^1.19.3",
+    "@react-native-community/netinfo": "^9.4.1",
+    "react-native-localize": "^3.0.2",
+    "react-i18next": "^13.5.0",
+    "axios": "^1.6.0",
+    "react-hook-form": "^7.47.0",
+    "yup": "^1.3.3",
+    "date-fns": "^2.30.0",
+    "lodash": "^4.17.21",
+    "react-native-flipper": "^0.212.0",
+    "@react-native-firebase/app": "^18.6.1",
+    "@react-native-firebase/analytics": "^18.6.1",
+    "@react-native-firebase/crashlytics": "^18.6.1",
+    "@react-native-firebase/messaging": "^18.6.1"
+  },
+  
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "@react-native/eslint-config": "^0.72.2",
+    "@react-native/metro-config": "^0.72.11",
+    "@tsconfig/react-native": "^3.0.0",
+    "@types/react": "^18.0.24",
+    "@types/react-test-renderer": "^18.0.0",
+    "@types/lodash": "^4.14.200",
+    "babel-jest": "^29.2.1",
+    "eslint": "^8.19.0",
+    "jest": "^29.2.1",
+    "metro-react-native-babel-preset": "0.76.8",
+    "prettier": "^2.4.1",
+    "react-test-renderer": "18.2.0",
+    "typescript": "4.8.4",
+    "detox": "^20.13.5",
+    "@testing-library/react-native": "^12.4.2",
+    "@testing-library/jest-native": "^5.4.3",
+    "react-native-testing-library": "^6.0.0",
+    "flipper-plugin-react-native-performance": "^0.3.1"
+  },
+  
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "start": "react-native start",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "detox test",
+    "build:android": "cd android && ./gradlew assembleRelease",
+    "build:ios": "react-native run-ios --configuration Release",
+    "clean": "react-native clean-project-auto",
+    "clean:android": "cd android && ./gradlew clean",
+    "clean:ios": "cd ios && xcodebuild clean",
+    "pods": "cd ios && pod install",
+    "postinstall": "cd ios && pod install",
+    "typescript": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
+    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
+    "bundle:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle"
+  },
+  
+  "jest": {
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/e2e/"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|@react-native|react-native-vector-icons|react-native-reanimated|@react-navigation)/)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.test.{ts,tsx}",
+      "!src/**/*.d.ts"
+    ]
+  },
+  
+  "detox": {
+    "test-runner": "jest",
+    "runner-config": "e2e/jest.config.js",
+    "configurations": {
+      "ios.sim.debug": {
+        "device": "ios.simulator",
+        "app": "ios.debug"
+      },
+      "android.emu.debug": {
+        "device": "android.emulator",
+        "app": "android.debug"
+      }
+    },
+    "devices": {
+      "ios.simulator": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 14 Pro"
+        }
+      },
+      "android.emulator": {
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_6_Pro_API_33"
+        }
+      }
+    },
+    "apps": {
+      "ios.debug": {
+        "type": "ios.app",
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/YourApp.app"
+      },
+      "android.debug": {
+        "type": "android.apk",
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk"
+      }
+    }
+  },
+  
+  "code_templates": {
+    "component_template": "// Functional component with TypeScript\nimport React from 'react';\nimport {View, Text, StyleSheet} from 'react-native';\n\ninterface {ComponentName}Props {\n  title: string;\n}\n\nconst {ComponentName}: React.FC<{ComponentName}Props> = ({title}) => {\n  return (\n    <View style={styles.container}>\n      <Text style={styles.title}>{title}</Text>\n    </View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: {\n    padding: 16,\n  },\n  title: {\n    fontSize: 18,\n    fontWeight: 'bold',\n  },\n});\n\nexport default {ComponentName};",
+    
+    "screen_template": "// Screen component with navigation\nimport React from 'react';\nimport {View, Text, StyleSheet, SafeAreaView} from 'react-native';\nimport {StackNavigationProp} from '@react-navigation/stack';\nimport {RouteProp} from '@react-navigation/native';\nimport {RootStackParamList} from '../navigation/types';\n\ntype {ScreenName}NavigationProp = StackNavigationProp<\n  RootStackParamList,\n  '{ScreenName}'\n>;\n\ntype {ScreenName}RouteProp = RouteProp<RootStackParamList, '{ScreenName}'>;\n\ninterface Props {\n  navigation: {ScreenName}NavigationProp;\n  route: {ScreenName}RouteProp;\n}\n\nconst {ScreenName}Screen: React.FC<Props> = ({navigation, route}) => {\n  return (\n    <SafeAreaView style={styles.container}>\n      <View style={styles.content}>\n        <Text style={styles.title}>{ScreenName}</Text>\n      </View>\n    </SafeAreaView>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    backgroundColor: '#fff',\n  },\n  content: {\n    flex: 1,\n    justifyContent: 'center',\n    alignItems: 'center',\n  },\n  title: {\n    fontSize: 24,\n    fontWeight: 'bold',\n  },\n});\n\nexport default {ScreenName}Screen;",
+    
+    "hook_template": "// Custom hook template\nimport {useState, useEffect} from 'react';\n\ninterface Use{HookName}Return {\n  data: any;\n  loading: boolean;\n  error: string | null;\n}\n\nexport const use{HookName} = (): Use{HookName}Return => {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(false);\n  const [error, setError] = useState<string | null>(null);\n\n  useEffect(() => {\n    // Hook logic here\n  }, []);\n\n  return {\n    data,\n    loading,\n    error,\n  };\n};",
+    
+    "slice_template": "// Redux Toolkit slice template\nimport {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';\n\ninterface {SliceName}State {\n  data: any[];\n  loading: boolean;\n  error: string | null;\n}\n\nconst initialState: {SliceName}State = {\n  data: [],\n  loading: false,\n  error: null,\n};\n\nexport const fetch{SliceName}Data = createAsyncThunk(\n  '{sliceName}/fetchData',\n  async () => {\n    // Async logic here\n    const response = await fetch('/api/data');\n    return response.json();\n  }\n);\n\nconst {sliceName}Slice = createSlice({\n  name: '{sliceName}',\n  initialState,\n  reducers: {\n    clearError: (state) => {\n      state.error = null;\n    },\n  },\n  extraReducers: (builder) => {\n    builder\n      .addCase(fetch{SliceName}Data.pending, (state) => {\n        state.loading = true;\n        state.error = null;\n      })\n      .addCase(fetch{SliceName}Data.fulfilled, (state, action) => {\n        state.loading = false;\n        state.data = action.payload;\n      })\n      .addCase(fetch{SliceName}Data.rejected, (state, action) => {\n        state.loading = false;\n        state.error = action.error.message || 'Unknown error';\n      });\n  },\n});\n\nexport const {clearError} = {sliceName}Slice.actions;\nexport default {sliceName}Slice.reducer;"
+  },
+  
+  "configuration": {
+    "metro.config.js": "const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');\n\nconst config = {\n  transformer: {\n    getTransformOptions: async () => ({\n      transform: {\n        experimentalImportSupport: false,\n        inlineRequires: true,\n      },\n    }),\n  },\n};\n\nmodule.exports = mergeConfig(getDefaultConfig(__dirname), config);",
+    
+    "babel.config.js": "module.exports = {\n  presets: ['module:metro-react-native-babel-preset'],\n  plugins: [\n    'react-native-reanimated/plugin',\n    [\n      'module-resolver',\n      {\n        root: ['./src'],\n        alias: {\n          '@components': './src/components',\n          '@screens': './src/screens',\n          '@services': './src/services',\n          '@utils': './src/utils',\n          '@types': './src/types',\n          '@assets': './src/assets',\n        },\n      },\n    ],\n  ],\n};",
+    
+    "tsconfig.json": "{\n  \"extends\": \"@tsconfig/react-native/tsconfig.json\",\n  \"compilerOptions\": {\n    \"allowJs\": true,\n    \"allowSyntheticDefaultImports\": true,\n    \"esModuleInterop\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"react-native\",\n    \"lib\": [\"es2017\"],\n    \"moduleResolution\": \"node\",\n    \"noEmit\": true,\n    \"strict\": true,\n    \"target\": \"esnext\",\n    \"baseUrl\": \"./src\",\n    \"paths\": {\n      \"@components/*\": [\"components/*\"],\n      \"@screens/*\": [\"screens/*\"],\n      \"@services/*\": [\"services/*\"],\n      \"@utils/*\": [\"utils/*\"],\n      \"@types/*\": [\"types/*\"],\n      \"@assets/*\": [\"assets/*\"]\n    }\n  },\n  \"exclude\": [\n    \"node_modules\",\n    \"babel.config.js\",\n    \"metro.config.js\",\n    \"jest.config.js\"\n  ]\n}",
+    
+    ".eslintrc.js": "module.exports = {\n  root: true,\n  extends: [\n    '@react-native',\n    'plugin:@typescript-eslint/recommended',\n  ],\n  parser: '@typescript-eslint/parser',\n  plugins: ['@typescript-eslint'],\n  parserOptions: {\n    ecmaFeatures: {\n      jsx: true,\n    },\n    ecmaVersion: 2018,\n    sourceType: 'module',\n  },\n  rules: {\n    '@typescript-eslint/no-unused-vars': 'error',\n    '@typescript-eslint/explicit-function-return-type': 'off',\n    'react-native/no-inline-styles': 'warn',\n  },\n};"
+  },
+  
+  "features": [
+    "TypeScript支持",
+    "Redux Toolkit状态管理",
+    "React Navigation v6导航",
+    "新架构(Fabric + TurboModules)支持",
+    "Hermes引擎",
+    "Flipper调试工具",
+    "ESLint + Prettier代码规范",
+    "Jest单元测试",
+    "Detox E2E测试",
+    "国际化支持",
+    "主题切换",
+    "性能监控",
+    "崩溃分析",
+    "推送通知",
+    "深度链接",
+    "生物识别认证",
+    "离线支持",
+    "代码分割",
+    "热重载",
+    "快速刷新"
+  ],
+  
+  "best_practices": [
+    "使用TypeScript提高代码质量",
+    "遵循React Native最佳实践",
+    "实现响应式设计",
+    "性能优化策略",
+    "内存管理",
+    "安全编码实践",
+    "可访问性支持",
+    "测试驱动开发",
+    "持续集成/持续部署",
+    "代码分层架构"
+  ],
+  
+  "performance_optimizations": [
+    "使用FlatList代替ScrollView处理大列表",
+    "图片优化和懒加载",
+    "使用React.memo防止不必要的重渲染",
+    "Bundle分割和懒加载",
+    "使用Hermes引擎提升性能",
+    "原生模块优化",
+    "内存泄漏防护",
+    "启动时间优化",
+    "动画性能优化",
+    "网络请求优化"
+  ],
+  
+  "supported_platforms": [
+    "iOS 12.0+",
+    "Android API 21+",
+    "New Architecture (Fabric)",
+    "Hermes Engine",
+    "Metro Bundler",
+    "Flipper Debugger"
+  ],
+  
+  "ci_cd_integration": {
+    "github_actions": "/.github/workflows/react_native_ci.yml",
+    "bitrise": "/bitrise.yml",
+    "app_center": "/appcenter-post-clone.sh",
+    "fastlane": "/fastlane/Fastfile"
+  }
+}
