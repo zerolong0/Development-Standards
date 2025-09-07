@@ -4,6 +4,7 @@
 这是一套基于行业专家最佳实践的AI协作开发规范体系，整合了Chris Dzombak、Simon Willison、Anthropic等专家的经验，并通过Claude Code逆向工程分析提炼出企业级AI Agent架构设计，为所有软件项目提供标准化的开发流程和质量保证。
 
 ### ✨ 最新更新
+- **AI设计方法论**: 交互视觉设计和还原的完整解决方案，涵盖Figma Make、v0、tldraw等最新工具
 - **AI前端设计指南**: 通过AI实现前端界面的完整方案，v0/Cursor/Bolt等工具深度对比
 - **AI系统架构模块**: 基于Claude Code逆向工程，提供完整的Multi-Agent架构设计、92%压缩率的上下文管理、15个工具生态分析
 - **1人公司创业指南**: AI时代的独立开发者创业方法论，从想法到产品的完整路径
@@ -11,7 +12,17 @@
 
 ## 📚 文档结构
 
-### 🎨 AI前端界面设计（最新）
+### 🎨 AI设计方法论（最新）
+- **[ai-design-methodology/](./ai-design-methodology/)** - 交互视觉设计和还原的完整解决方案
+  - **[设计到代码工具](./ai-design-methodology/design-to-code-tools.md)** - Figma Make、v0、Visual Copilot等工具详解
+  - **[组件化设计系统](./ai-design-methodology/component-systems.md)** - shadcn/ui、AI Elements、Design Tokens自动化
+  - **[视觉还原技术](./ai-design-methodology/visual-implementation.md)** - 截图/草图转代码、智能映射、响应式设计
+  - **[交互设计模式](./ai-design-methodology/interaction-patterns.md)** - 双模式交互、Flow State优化、渐进式披露
+  - **[协作工作流](./ai-design-methodology/collaboration-workflow.md)** - 设计交付自动化、Token同步、实时协作
+  - **[实施指南](./ai-design-methodology/implementation-guide.md)** - 四阶段实施路线图、ROI分析
+  - **[资源中心](./ai-design-methodology/resources/)** - 工具对比、案例研究、参考文献
+
+### 🎨 AI前端界面设计
 - **[ai-frontend-design/](./ai-frontend-design/)** - AI前端开发完整解决方案
   - **[工具对比](./ai-frontend-design/ai-tools-comparison.md)** - v0/Cursor/Bolt/Replit/Lovable深度对比
   - **[设计转代码](./ai-frontend-design/design-to-code.md)** - Screenshot-to-Code工作流（待完善）
@@ -131,6 +142,7 @@ cd scripts && python3 start-wiki.py
 
 | 版本 | 日期 | 主要变更 | 基于项目 |
 |------|------|----------|----------|
+| 2.2 | 2025-09-07 | 新增AI设计方法论模块 | 全网AI设计工具研究 |
 | 2.1 | 2025-09-07 | 新增AI前端界面设计指南 | AI工具生态研究 |
 | 2.0 | 2025-09-07 | 新增AI系统架构模块、1人公司创业指南 | Claude Code逆向工程 |
 | 1.5 | 2025-09-06 | 新增移动端跨平台开发完整方案 | 跨平台框架分析 |
@@ -148,6 +160,7 @@ cd scripts && python3 start-wiki.py
 - AI-Solo-Founder创业方法论
 
 ### 适用场景
+- **AI驱动的设计开发** - 从设计到代码的全流程自动化
 - **企业级AI Agent开发** - 基于Claude Code架构的Multi-Agent系统
 - **1人公司/独立开发者** - AI驱动的单人创业完整方案
 - **AI Agent产品开发** - 完整的Agent开发方法论
