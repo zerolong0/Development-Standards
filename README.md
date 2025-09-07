@@ -1,9 +1,29 @@
 # AI协作开发规范体系
 
 ## 🎯 概述
-这是一套基于行业专家最佳实践的AI协作开发规范体系，整合了Chris Dzombak、Simon Willison、Anthropic等专家的经验，为所有软件项目提供标准化的开发流程和质量保证。
+这是一套基于行业专家最佳实践的AI协作开发规范体系，整合了Chris Dzombak、Simon Willison、Anthropic等专家的经验，并通过Claude Code逆向工程分析提炼出企业级AI Agent架构设计，为所有软件项目提供标准化的开发流程和质量保证。
+
+### ✨ 最新更新
+- **AI系统架构模块**: 基于Claude Code逆向工程，提供完整的Multi-Agent架构设计、92%压缩率的上下文管理、15个工具生态分析
+- **1人公司创业指南**: AI时代的独立开发者创业方法论，从想法到产品的完整路径
+- **移动端跨平台方案**: Flutter、React Native、uni-app、Taro全栈支持
 
 ## 📚 文档结构
+
+### 🏗️ AI系统架构模块（新增）
+- **[ai-system-architecture/](./ai-system-architecture/)** - 基于Claude Code逆向工程的企业级AI Agent架构参考
+  - **[核心设计原则](./ai-system-architecture/core-principles.md)** - 效率优先、用户体验、安全可控、工程化原则
+  - **[系统架构设计](./ai-system-architecture/system-architecture.md)** - 分层架构、组件设计、数据流控制
+  - **[Multi-Agent协作](./ai-system-architecture/multi-agent-pattern.md)** - Main-Sub Agent模式、任务分发、上下文隔离
+  - **[上下文管理](./ai-system-architecture/context-management.md)** - 92%压缩率优化、记忆持久化、动态注入
+  - **[工具生态系统](./ai-system-architecture/tool-ecosystem.md)** - 15个工具分析、MCP协议集成、安全框架
+  - **[实施指南](./ai-system-architecture/implementation-guide.md)** - MVP开发路线图、部署策略、监控运维
+
+### 🚀 1人公司AI创业指南（新增）
+- **[AI-Solo-Founder/](./AI-Solo-Founder/)** - AI时代的单人创业完整指南
+  - 基于实战经验的AI创业方法论
+  - 从想法到产品的完整路径
+  - 适合独立开发者和小团队
 
 ### 📋 核心规范文档
 - **[TECHNICAL_DECISIONS_TEMPLATE.md](./docs/TECHNICAL_DECISIONS_TEMPLATE.md)** - 技术决策记录模板
@@ -103,6 +123,8 @@ cd scripts && python3 start-wiki.py
 
 | 版本 | 日期 | 主要变更 | 基于项目 |
 |------|------|----------|----------|
+| 2.0 | 2025-09-07 | 新增AI系统架构模块、1人公司创业指南 | Claude Code逆向工程 |
+| 1.5 | 2025-09-06 | 新增移动端跨平台开发完整方案 | 跨平台框架分析 |
 | 1.0 | 2025-08-29 | 初始版本，整合专家最佳实践 | MiniClothes |
 
 ## 📖 参考资料
@@ -112,9 +134,13 @@ cd scripts && python3 start-wiki.py
 - Chris Dzombak: "Functional Documentation"
 - Simon Willison: Context Engineering理念
 - Anthropic: Claude Code Best Practices
+- Claude Code Reverse Engineering Analysis (Yuyz0112)
 - AI Pair Programming研究和实践
+- AI-Solo-Founder创业方法论
 
 ### 适用场景
+- **企业级AI Agent开发** - 基于Claude Code架构的Multi-Agent系统
+- **1人公司/独立开发者** - AI驱动的单人创业完整方案
 - **AI Agent产品开发** - 完整的Agent开发方法论
 - **智能应用开发** - AI驱动的应用产品
 - **移动端跨平台开发** - Flutter、React Native、uni-app、Taro全栈支持
@@ -142,6 +168,6 @@ cd scripts && python3 start-wiki.py
 
 ---
 
-*最后更新: 2025-08-29*  
+*最后更新: 2025-09-07*  
 *维护者: Zerolong*  
 *版权: MIT License*
